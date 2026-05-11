@@ -7,7 +7,8 @@
   "nav": {
     "about": "About",
     "usage": "Usage",
-    "home": "Home"
+    "home": "Home",
+    "contact": "Contact"
   },
   "hero": {
     "title": "MinerSearch - Miner Detection and Removal",
@@ -39,5 +40,17 @@
   "language-in": "in the program folder and specify",
   "lang-ru": "RU",
   "lang-or": "or",
-  "lang-en": "EN"
+  "lang-en": "EN",
+  "contact": {
+    "nav": "Contact",
+    "title": "Have questions?",
+    "desc": "Ask them in our Telegram chat — the team and community will answer quickly.",
+    "btn": "Write on Telegram"
+  },
+  "downloads": {
+    "text": "downloads"
+  },
+  "footer": {
+    "open-source": "Open-source project."
+  }
 }
