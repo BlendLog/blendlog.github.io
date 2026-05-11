@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title data-i18n="title">MinerSearch - Miner Detection and Removal</title>
+      <meta name="description" id="page-description" content="Free utility for automatic detection and removal of hidden miners on Windows.">
+      <!-- Font Awesome для иконок (GitHub, Telegram) -->
+      <link rel="stylesheet" href="fonts/all.css">
+      <!-- OG теги для соцсетей -->
+      <meta property="og:title" id="og-title" content="MinerSearch - Miner Detection and Removal">
+      <meta property="og:description" id="og-description" content="Free utility for automatic detection and removal of hidden miners on Windows.">
+      <meta property="og:url" content="https://blendlog.github.io/MinerSearch/">
+      <meta property="og:type" content="website">
+      <script type="application/ld+json" id="schema-json">
+         {
+           "@context": "https://schema.org",
+           "@type": "SoftwareApplication",
+           "name": "MinerSearch",
+           "description": "Free utility for automatic detection and removal of hidden miners on Windows.",
+           "url": "https://github.com/BlendLog/MinerSearch",
+           "operatingSystem": "Microsoft Windows",
+           "applicationCategory": "SecurityApplication"
+         }
+             
+      </script>
+      <style>
+         * { margin: 0; padding: 0; box-sizing: border-box; }
+         body {
+         background-color: #0d0d0d;
+         color: #ffffff;
+         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+         line-height: 1.6;
+         min-height: 100vh;
+         }
+         
+         /* ===== Language Switcher (правый верхний угол) ===== */
+         .lang-switcher {
+         position: fixed;
+         top: 16px;
+         right: 16px;
+         z-index: 1001;
+         border-radius: 24px;
+         padding: 6px;
+         background: #111;
+         border: 1px solid #222;
+         }
+         .lang-btn {
+         background: transparent;
+         border: none;
+         color: #888;
+         padding: 8px 15px;
+         border-radius: 20px;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         font-weight: 500;
+         }
+         .lang-btn.active { background: #3a6bca; color: #fff; }
+         .lang-btn:hover:not(.active) { color: #e0e0e0; background: #3a404a0d; }
+         .lang-btn.telegram-channel {
+         background: #222c41;
+         color: #fff;
+         font-weight: 600;
+         }
+         .lang-btn.telegram-channel:hover {
+         background: #0077bb;
+         }
+         /* ===== Navigation ===== */
+         nav {
+         display: flex; align-items: center; justify-content: space-between;
+         padding: 20px 40px; max-width: 900px; margin: 0 auto;
+         }
+         .logo {
+         display: flex; align-items: center; gap: 10px; color: #e0e0e0;
+         font-weight: 600; font-size: 15px; letter-spacing: 0.5px;
+         }
+         .logo-icon {
+         width: 22px; height: 22px; border: 2px solid #3a6bca;
+         border-radius: 4px; display: flex; align-items: center; justify-content: center;
+         font-size: 11px; color: #3a6bca; font-weight: 700;
+         }
+         .nav-links { list-style: none; display: flex; gap: 32px; }
+         .nav-links a {
+         color: #888; text-decoration: none; font-size: 14px; transition: color 0.3s ease;
+         position: relative;
+         }
+         .nav-links a::after {
+         content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px;
+         background-color: #3a6bca; border-radius: 1px;
+         transform: scaleX(0); transition: transform 0.3s ease;
+         }
+         .nav-links a:hover { color: #e0e0e0; }
+         .nav-links a:hover::after { transform: scaleX(1); }
+         /* ===== Hero ===== */
+         .hero {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         text-align: center;
+         padding: 80px 20px 60px;
+         }
+         .hero-buttons {
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+         gap: 12px;
+         }
+         .ascii-title {
+         color: #5a8ffa; font-family: 'Courier New', monospace; font-size: 11px;
+         line-height: 1.05; white-space: pre; margin-bottom: 30px; user-select: none;
+         display: block; margin-left: auto; margin-right: auto; text-align: center; width: fit-content;
+         }
+         h1.ascii-title { margin: 0; padding: 0; font-size: inherit; font-weight: normal; }
+         .hero-subtitle { color: #777; font-size: 16px; max-width: 520px; margin-bottom: 40px; line-height: 1.7; }
+         .btn {
+         padding: 12px 28px; border-radius: 6px; font-size: 14px;
+         font-weight: 500; text-decoration: none; cursor: pointer;
+         display: inline-flex; align-items: center; gap: 8px;
+         transition: all 0.2s ease; position: relative; overflow: hidden;
+         }
+         .btn-primary {
+         background-color: #3a6bca; color: #fff; border: none;
+         }
+         .btn-primary:hover {
+         background-color: #4a7bdb; transform: translateY(-2px);
+         box-shadow: 0 4px 15px rgba(58, 107, 202, 0.5);
+         }
+         .btn-secondary {
+         background-color: transparent; color: #bbb5b5; border: 1px solid #333;
+         }
+         .btn-secondary:hover {
+         border-color: #555; color: #bbb; transform: translateY(-2px);
+         box-shadow: 0 4px 15px rgba(255,255,255,0.05);
+         }
+         .telegram-btn {
+         border-color: #1f355c;
+         color: #b3c9f3;
+         }
+         .telegram-btn:hover {
+         border-color: #3a6bca;
+         color: #d6e4ff;
+         }
+         .windows-tag { display: block; margin-top: 8px; font-size: 11px; color: #666; letter-spacing: 1px; }
+         /* ===== Divider ===== */
+         .divider { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+         .divider-line { height: 1px; background-color: #1a1a1a; }
+         .console-window {
+         background: #0c0c0c;
+         border: 1px solid #1f1f1f;
+         border-radius: 10px;
+         overflow: hidden;
+         }
+         .console-titlebar {
+         height: 18px;
+         background: #111;
+         border-bottom: 1px solid #1f1f1f;
+         display: flex;
+         align-items: center;
+         padding: 0 14px;
+         color: #888;
+         font-size: 13px;
+         }
+         /* ===== Content ===== */
+         .content { max-width: 900px; margin: 0 auto; padding: 80px 40px; }
+         .section { margin-bottom: 80px; }
+         .section:last-child { margin-bottom: 0; }
+         .section-title { color: #e0e0e0; font-size: 22px; font-weight: 600; margin-bottom: 24px; }
+         .section-text { color: #888; font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
+         /* Feature cards */
+         .features-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 30px; }
+         .feature-item { background-color: #111; border: 1px solid #1a1a1a; border-radius: 8px; padding: 20px; transition: border-color 0.2s; }
+         .feature-item:hover { border-color: #3a6bca; }
+         .feature-item h4 { color: #c0c0c0; font-size: 14px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+         .feature-item h4 i { color: #3a6bca; width: 16px; text-align: center; }
+         .feature-item p { color: #666; font-size: 13px; line-height: 1.6; }
+         .features-accordion {
+         grid-template-columns: 1fr;
+         gap: 12px;
+         }
+         .feature-accordion-item {
+         padding: 0;
+         overflow: hidden;
+         }
+         .feature-summary {
+         list-style: none;
+         cursor: pointer;
+         padding: 18px 20px;
+         position: relative;
+         }
+         .feature-summary::-webkit-details-marker {
+         display: none;
+         }
+         .feature-summary::after {
+         content: '';
+         position: absolute;
+         right: 18px;
+         top: 24px;
+         width: 8px;
+         height: 8px;
+         border-right: 2px solid #4d6aa8;
+         border-bottom: 2px solid #4d6aa8;
+         transform: rotate(45deg);
+         transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+         }
+         .feature-accordion-item[open] .feature-summary::after {
+         transform: rotate(225deg);
+         }
+         .feature-summary h4 {
+         margin-bottom: 8px;
+         padding-right: 20px;
+         }
+         .feature-summary p {
+         margin: 0;
+         padding-right: 20px;
+         }
+         .feature-panel {
+         max-height: 0;
+         overflow: hidden;
+         padding: 0 20px;
+         transition: max-height 0.6s ease-out, padding 0.6s ease-out;
+         }
+         .feature-accordion-item[open] .feature-panel {
+         max-height: 800px;
+         padding: 20px;
+         transition: max-height 0.6s ease-out, padding 0.6s ease-out;
+         }
+         .feature-panel-inner {
+         overflow: hidden;
+         border-top: 1px solid #1a1a1a;
+         border-radius: 0;
+         }
+         .feature-panel-inner img {
+         display: block;
+         width: 100%;
+         }
+         /* Usage steps */
+         .usage-steps { counter-reset: step; list-style: none; margin-top: 30px; }
+         .usage-steps li { position: relative; padding-left: 50px; margin-bottom: 24px; color: #888; font-size: 15px; line-height: 1.7; }
+         .usage-steps li::before {
+         counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 30px; height: 30px;
+         background-color: #111; border: 1px solid #222; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+         color: #3a6bca; font-size: 13px; font-weight: 600;
+         }
+         /* ===== Footer ===== */
+         footer { text-align: center; padding: 40px; color: #444; font-size: 13px; border-top: 1px solid #111; max-width: 900px; margin: 0 auto; }
+         footer a { color: #666; text-decoration: none; }
+         footer a:hover { color: #888; }
+         html { scroll-behavior: smooth; }
+         /* ===== Responsive ===== */
+         @media (max-width: 600px) {
+         .lang-switcher { top: 10px; right: 10px; }
+         nav { padding: 16px 20px; flex-direction: column; gap: 16px; }
+         .hero { padding: 80px 20px 60px; }
+         .ascii-title { font-size: 8px; }
+         .content { padding: 60px 20px; }
+         .features-list { grid-template-columns: 1fr; }
+         }
+      </style>
+   </head>
+   <body>
+      <!-- Language Switcher -->
+      <div class="lang-switcher">
+         <button type="button" class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
+         <button type="button" class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
+      </div>
+      <!-- Nav -->
+      <nav>
+         <div class="logo">
+            <div class="logo-icon">M</div>
+            MinerSearch
+         </div>
+         <ul class="nav-links">
+            <li><a href="#home" data-i18n="nav.home">Home</a></li>
+            <li><a href="#about" data-i18n="nav.about">About</a></li>
+            <li><a href="#usage" data-i18n="nav.usage">Usage</a></li>
+            <li>
+               <a href="https://github.com/BlendLog/MinerSearch"
+                  target="_blank"
+                  rel="noopener">
+               <i class="fab fa-github"></i> GitHub
+               </a>
+            </li>
+         </ul>
+      </nav>
+      <!-- Hero -->
+      <section class="hero" id="home">
+         <h1 class="ascii-title">
+╔═════════════════════════════════════════════════════════════════════════════════════════╗
+║███╗   ███╗██╗███╗   ██╗███████╗██████╗  ███████╗███████╗ █████╗ ██████╗  ██████╗██╗  ██╗║
+║████╗ ████║██║████╗  ██║██╔════╝██╔══██╗ ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔════╝██║  ██║║
+║██╔████╔██║██║██╔██╗ ██║█████╗  ██████╔╝ ███████╗█████╗  ███████║██████╔╝██║     ███████║║
+║██║╚██╔╝██║██║██║╚██╗██║██╔══╝  ██╔══██╗ ╚════██║██╔══╝  ██╔══██║██╔══██╗██║     ██╔══██║║
+║██║ ╚═╝ ██║██║██║ ╚████║███████╗██║  ██║ ███████║███████╗██║  ██║██║  ██║╚██████╗██║  ██║║
+║╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝║
+╚═════════════════════════════════════════════════════════════════════════════════════════╝
+         </h1>
+         <p class="hero-subtitle" data-i18n="hero.subtitle">Free utility for detecting and removing hidden cryptocurrency miners on Windows systems.</p>
+         <div class="hero-buttons">
+            <a href="https://github.com/BlendLog/MinerSearch/releases"
+               class="btn btn-primary"
+               data-i18n="hero.downloadBtn">
+            Download MinerSearch
+            </a>
+            <a href="https://t.me/MinerSearch_Blog"
+               class="btn btn-secondary telegram-btn"
+               target="_blank"
+               rel="noopener">
+            <i class="fab fa-telegram"></i>
+            <span data-i18n="hero.telegramChannel">Telegram Channel</span>
+            </a>
+         </div>
+         <span class="windows-tag"
+            data-i18n="hero.window-tag">
+         For Windows 8.1, 10, 11
+         </span>
+      </section>
+      <!-- Divider -->
+      <div class="divider">
+         <div class="divider-line"></div>
+      </div>
+      <!-- Content -->
+      <div class="content">
+         <section class="section" id="about">
+            <h2 class="section-title" data-i18n="nav.about">About</h2>
+            <p class="section-text" data-i18n="about.desc1">MinerSearch is a utility for detecting suspicious files, processes, services and other artifacts associated with hidden cryptocurrency miners.</p>
+            <p class="section-text" data-i18n="about.desc2">The utility scans the system, suspends malicious processes, moves files to quarantine and generates detailed reports. Console mode and command-line parameters are supported.</p>
+            <ul class="features-list features-accordion">
+               <li>
+                  <details class="feature-item feature-accordion-item">
+                     <summary class="feature-summary">
+                        <h4>
+                           <i class="fa fa-search" aria-hidden="true"></i>
+                           <span data-i18n="about.f1.title">Process Scanning</span>
+                        </h4>
+                        <p data-i18n="about.f1.desc">
+                          Search for suspicious processes by signatures, ports and behavior
+                        </p>
+                     </summary>
+                     <div class="feature-panel">
+                        <div class="feature-panel-inner console-window">
+                           <img src="images/1_scan_processes.png" alt="scan_processes">
+                        </div>
+                     </div>
+                  </details>
+               </li>
+               <li>
+                  <details class="feature-item feature-accordion-item">
+                     <summary class="feature-summary">
+                        <h4>
+                            <i class="fas fa-server"></i>
+                           <span data-i18n="about.f2.title">Registry Check</span>
+                        </h4>
+                        <p data-i18n="about.f2.desc">
+                           Analysis of startup files, unwanted settings, and suspicious entries in the system registry.
+                        </p>
+                     </summary>
+                     <div class="feature-panel">
+                        <div class="feature-panel-inner console-window">
+                           <img src="images/2_scan_registry.png" alt="Проверка реестра">
+                        </div>
+                     </div>
+                  </details>
+               </li>
+               <li>
+                  <details class="feature-item feature-accordion-item">
+                     <summary class="feature-summary">
+                        <h4>
+                            <i class="fas fa-cog"></i>
+                           <span data-i18n="about.f3.title">WMI and Services</span>
+                        </h4>
+                        <p data-i18n="about.f3.desc">
+                           Check WMI integrity and suspicious Windows services
+                        </p>
+                     </summary>
+                     <div class="feature-panel">
+                        <div class="feature-panel-inner console-window">
+                           <img src="images/3_scan_services.png" alt="WMI and Services">
+                        </div>
+                     </div>
+                  </details>
+               </li>
+               <li>
+                  <details class="feature-item feature-accordion-item">
+                     <summary class="feature-summary">
+                        <h4>
+                           <i class="fa fa-tasks" aria-hidden="true"></i>
+                           <span data-i18n="about.f4.title">Task Scheduler</span>
+                        </h4>
+                        <p data-i18n="about.f4.desc">Analysis of the task scheduler and malware persistence mechanisms. Analysis in Windows Safe Mode is supported.</p>
+                     </summary>
+                     <div class="feature-panel">
+                        <div class="feature-panel-inner console-window">
+                           <img src="images/4_scan_tasks.png" alt="Карантин угроз">
+                        </div>
+                     </div>
+                  </details>
+               </li>
+
+               <li>
+                  <details class="feature-item feature-accordion-item">
+                     <summary class="feature-summary">
+                        <h4>
+                           <i class="fas fa-file-alt"></i>
+                           <span data-i18n="about.f6.title">Logging</span>
+                        </h4>
+                        <p data-i18n="about.f6.desc">
+                           Detailed reports on each scanning stage and found threats
+                        </p>
+                     </summary>
+                     <div class="feature-panel">
+                        <div class="feature-panel-inner console-window">
+                           <img src="images/6_logging.png" alt="logging">
+                        </div>
+                     </div>
+                  </details>
+               </li>
+               <li>
+                  <details class="feature-item feature-accordion-item">
+                     <summary class="feature-summary">
+                        <h4>
+                           <i class="fas fa-sliders"></i>
+                           <span data-i18n="about.f5.title">Advanced Scanning Options</span>
+                        </h4>
+                        <p data-i18n="about.f5.desc">
+                           Wide range of launch parameters for precise scanning configuration
+                        </p>
+                     </summary>
+                     <div class="feature-panel">
+                        <a href="https://github.com/BlendLog/MinerSearch/blob/master/README.md" target="_blank" rel="noopener" style="color:#3a6bca;text-decoration:none;">
+                           <i class="fas fa-external-link-alt"></i>
+                           <span data-i18n="about.f5.more">More</span>
+                        </a>
+                     </div>
+                  </details>
+               </li>
+            </ul>
+         </section>
+         <section class="section" id="usage">
+            <h2 class="section-title" data-i18n="nav.usage">Usage</h2>
+            <ol class="usage-steps">
+               <li><span style="color:#c0c0c0;" data-i18n="usage.s1">Download the latest version from GitHub Releases and extract the archive into a separate folder.</span></li>
+               <li><span style="color:#c0c0c0;" data-i18n="usage.s2">Run application as administrator. On first launch, program offers to send scan results – this is optional.</span></li>
+               <li><span style="color:#c0c0c0;" data-i18n="usage.s3">Wait for scanning completion. After that, a form opens with brief report on eliminated threats.</span></li>
+               <li><span style="color:#c0c0c0;" data-i18n="usage.s4">Click "Open Report" to view detailed report or "Quarantine" to manage quarantine.</span></li>
+            </ol>
+            <p class="section-text" style="margin-top: 30px;">
+               <span data-i18n="language-change">To change the language, create a file</span>
+               <code style="background:#111;padding:2px 6px;border-radius:3px;color:#999;font-size:13px;" data-i18n="language-cfg">language.cfg</code>
+               <span data-i18n="language-in">in the program folder and specify</span>
+               <code style="background:#111;padding:2px 6px;border-radius:3px;color:#999;font-size:13px;" data-i18n="lang-ru">RU</code>
+               <span data-i18n="lang-or">or</span>
+               <code style="background:#111;padding:2px 6px;border-radius:3px;color:#999;font-size:13px;" data-i18n="lang-en">EN</code>.
+            </p>
+         </section>
+      </div>
+      <!-- Footer -->
+      <footer>
+         MinerSearch — open source project
+         <br><br>
+         <a href="https://github.com/BlendLog/MinerSearch">GitHub</a>
+         <a href="https://github.com/BlendLog/MinerSearch/releases">Releases</a>
+         <a href="https://t.me/MinerSearch_Blog">Telegram</a>
+      </footer>
+      <!-- i18n Script -->
+      <script>
+         let currentLang = 'ru';
+         
+         async function loadLanguage(lang) {
+             try {
+                 const res = await fetch(`locales/${lang}.json`);
+                 if (!res.ok) {
+                     console.warn(`Failed to load ${lang} translation: ${res.status}`);
+                     return;
+                 }
+                 const dict = await res.json();
+         
+                 // Обновляем все элементы с data-i18n
+                 document.querySelectorAll('[data-i18n]').forEach(el => {
+                     const key = el.getAttribute('data-i18n');
+                     const value = getNested(dict, key);
+                     if (value !== undefined && value !== null) {
+                         if (el.tagName === 'INPUT') {
+                             el.value = value;
+                         } else {
+                             el.textContent = value;
+                         }
+                     }
+                 });
+         
+                 // Обновляем meta description, OG теги и JSON-LD
+                 const desc = getNested(dict, 'seo.description');
+                 if (desc) {
+                     const metaDesc = document.getElementById('page-description');
+                     if (metaDesc) metaDesc.setAttribute('content', desc);
+         
+                     const ogTitle = document.getElementById('og-title');
+                     if (ogTitle) ogTitle.setAttribute('content', dict.title || 'MinerSearch');
+         
+                     const ogDesc = document.getElementById('og-description');
+                     if (ogDesc) ogDesc.setAttribute('content', desc);
+         
+                     const jsonLd = document.getElementById('schema-json');
+                     if (jsonLd) {
+                         try {
+                             const schema = JSON.parse(jsonLd.textContent || '{}');
+                             schema.description = desc;
+                             jsonLd.textContent = JSON.stringify(schema, null, 2);
+                         } catch(e) {}
+                     }
+                 }
+         
+                 // Обновляем активную кнопку
+                 document.querySelectorAll('.lang-btn').forEach(btn => {
+                     if (btn.tagName === 'BUTTON') {
+                         btn.classList.toggle('active', btn.dataset.lang === lang);
+                     }
+                 });
+                 currentLang = lang;
+             } catch (e) {
+                 console.error(`Error loading language ${lang}:`, e);
+             }
+         }
+         
+         function switchLang(lang) {
+             if (lang !== currentLang) loadLanguage(lang);
+         }
+         
+         function getNested(obj, path) {
+             return path.split('.').reduce((o, k) => (o && o[k] !== undefined) ? o[k] : undefined, obj);
+         }
+         
+         document.addEventListener('DOMContentLoaded', () => {
+             const lang = (navigator.language || '').slice(0, 2) === 'en' ? 'en' : 'ru';
+             switchLang(lang);
+         });
+             
+         document.querySelectorAll('.feature-accordion-item').forEach(item => {
+            item.addEventListener('toggle', () => {
+                if (!item.open) return;
+                document.querySelectorAll('.feature-accordion-item').forEach(other => {
+                    if (other !== item) other.open = false;
+                });
+            });
+        });
+      </script>
+   </body>
+</html>

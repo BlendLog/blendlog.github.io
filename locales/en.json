@@ -1,0 +1,43 @@
+{
+  "title": "MinerSearch - Miner Detection and Removal",
+  "seo": {
+    "description": "Free utility for automatic detection and removal of hidden miners on Windows."
+  },
+  "siteName": "MinerSearch",
+  "nav": {
+    "about": "About",
+    "usage": "Usage",
+    "home": "Home"
+  },
+  "hero": {
+    "title": "MinerSearch - Miner Detection and Removal",
+    "subtitle": "Free utility for detecting and removing hidden cryptocurrency miners on Windows systems.",
+    "downloadBtn": "Download MinerSearch",
+    "usageBtn": "How to Use",
+    "telegramChannel": "Telegram Channel",
+    "window-tag": "For Windows 8.1, 10, 11"
+
+  },
+  "about": {
+    "desc1": "MinerSearch is a utility for detecting suspicious files, processes, services and other artifacts associated with hidden cryptocurrency miners.",
+    "desc2": "The utility scans the system, suspends malicious processes, moves files to quarantine and generates detailed reports. Console mode and command-line parameters are supported.",    
+    "f1": { "title": "Process Scanning", "desc": "Search for suspicious processes by signatures, ports and behavior" },
+    "f2": { "title": "Registry Check", "desc": "Analysis of startup files, unwanted settings, and suspicious entries in the system registry." },
+    "f3": { "title": "WMI and Services", "desc": "Check WMI integrity and suspicious Windows services" },
+    "f4": { "title": "Task Scheduler", "desc": "Analysis of the task scheduler and malware persistence mechanisms. Analysis in Windows Safe Mode is supported." },
+    "f5": { "title": "Advanced Scanning Options", "desc": "Wide range of launch parameters for precise scanning configuration", "more": "More" },
+    "f6": { "title": "Logging", "desc": "Detailed reports on each scanning stage and found threats" }
+  },
+  "usage": {
+    "s1": "Download the latest version from GitHub Releases and extract the archive into a separate folder.",
+    "s2": "Run application as administrator. On first launch, program offers to send scan results – this is optional.",
+    "s3": "Wait for scanning completion. After that, a form opens with brief report on eliminated threats.",
+    "s4": "Click \"Open Report\" to view detailed report or \"Quarantine\" to manage quarantine."
+  },
+  "language-change": "To change the language, create a file",
+  "language-cfg": "language.cfg",
+  "language-in": "in the program folder and specify",
+  "lang-ru": "RU",
+  "lang-or": "or",
+  "lang-en": "EN"
+}
