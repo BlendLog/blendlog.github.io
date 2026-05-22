@@ -1,5 +1,6 @@
 {
   "title": "MinerSearch - Miner Detection and Removal",
+  "titleSupport": "MinerSearch | Support the Project",
   "seo": {
     "description": "Free utility for automatic detection and removal of hidden miners on Windows."
   },
@@ -8,7 +9,8 @@
     "about": "About",
     "usage": "Usage",
     "home": "Home",
-    "contact": "Contact"
+    "contact": "Contact",
+    "donate": "💰 Donate"
   },
   "hero": {
     "title": "MinerSearch - Miner Detection and Removal",
@@ -17,11 +19,10 @@
     "usageBtn": "How to Use",
     "telegramChannel": "Telegram Channel",
     "window-tag": "For Windows 8.1, 10, 11"
-
   },
   "about": {
     "desc1": "MinerSearch is a utility for detecting suspicious files, processes, services and other artifacts associated with hidden cryptocurrency miners.",
-    "desc2": "The utility scans the system, suspends malicious processes, moves files to quarantine and generates detailed reports. Console mode and command-line parameters are supported.",    
+    "desc2": "The utility scans the system, suspends malicious processes, moves files to quarantine and generates detailed reports. Console mode and command-line parameters are supported.",
     "f1": { "title": "Process Scanning", "desc": "Search for suspicious processes by signatures, ports and behavior" },
     "f2": { "title": "Registry Check", "desc": "Analysis of startup files, unwanted settings, and suspicious entries in the system registry." },
     "f3": { "title": "WMI and Services", "desc": "Check WMI integrity and suspicious Windows services" },
@@ -50,7 +51,28 @@
   "downloads": {
     "text": "downloads"
   },
+    "heroDonate": {
+    "title": "Support the Project",
+    "subtitle": "If the utility was useful, you can support the development in any convenient way. This support helps continue the fight against miners and keeps development moving forward. Thank you!"
+  },
+  "donate": {
+    "boosty": {
+      "title": "Boosty",
+      "desc": "Visit the author's page on Boosty"
+    },
+    "ton": {
+      "title": "Ton",
+      "desc": "UQDycad1nVoeE2lGVj-ONlQcR0rMTLUXOxTg6MW9jbfwzIWG"
+    },
+    "usdt": {
+      "title": "USDT (TRC-20)",
+      "desc": "TW2fA21QdywMUsYL3SXXzvAXXaKeSmbGDn"
+    },
+    "copy": "Copy",
+    "copied": "Copied"
+  },
   "footer": {
-    "open-source": "Open-source project."
+    "open-source": "Open-source project.",
+    "back": "Back to home"
   }
 }

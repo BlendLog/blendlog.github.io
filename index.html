@@ -6,12 +6,14 @@
       <title data-i18n="title">MinerSearch - Miner Detection and Removal</title>
       <link rel="icon" href="favicon.svg" type="image/svg+xml">
       <meta name="description" id="page-description" content="Free utility for automatic detection and removal of hidden miners on Windows.">
+      <meta name="robots" content="index, follow">
+      <link rel="canonical" href="https://blendlog.github.io/">
       <!-- Font Awesome (GitHub, Telegram) -->
       <link rel="stylesheet" href="fonts/all.css">
 
       <meta property="og:title" id="og-title" content="MinerSearch - Miner Detection and Removal">
       <meta property="og:description" id="og-description" content="Free utility for automatic detection and removal of hidden miners on Windows.">
-      <meta property="og:url" content="https://blendlog.github.io/MinerSearch/">
+      <meta property="og:url" content="https://blendlog.github.io/">
       <meta property="og:type" content="website">
       <meta name="google-site-verification" content="vbwg-HSIod8HA6sBzWFUbjnDjOeCnWfehDCyC39LEJk" />
       <script type="application/ld+json" id="schema-json">
@@ -71,6 +73,10 @@
          nav {
          display: flex; align-items: center; justify-content: space-between;
          padding: 20px 40px; max-width: 900px; margin: 0 auto;
+         position: sticky; top: 0; z-index: 1000;
+         background: rgba(13, 13, 13, 0.96);
+         backdrop-filter: blur(10px);
+         border-bottom: 1px solid rgba(255,255,255,0.06);
          }
          .logo {
          display: flex; align-items: center; gap: 10px; color: #e0e0e0;
@@ -86,6 +92,11 @@
          color: #888; text-decoration: none; font-size: 14px; transition: color 0.3s ease;
          position: relative;
          }
+         .nav-links a.donate-tab {
+         display: inline-flex;
+         align-items: center;
+         color: #f5a155;
+         }
          .nav-links a::after {
          content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px;
          background-color: #3a6bca; border-radius: 1px;
@@ -93,6 +104,25 @@
          }
          .nav-links a:hover { color: #e0e0e0; }
          .nav-links a:hover::after { transform: scaleX(1); }
+         .nav-links a.active { color: #3a6bca; }
+         .nav-links a.active::after { transform: scaleX(1); background-color: #3a6bca; }
+         .hero, .section { scroll-margin-top: 100px; }
+         .nav-links a.donate-tab {
+         color: #f5a155;
+         }
+
+         .nav-links a.donate-tab:hover {
+         color: #ffb86c;
+         }
+         .nav-links a.donate-tab:hover::after {
+         background-color: #ffb86c;
+         }
+         .nav-links .github-link {
+         color: #ffffff;
+         }
+         .nav-links .github-link:hover {
+         color: #ffffff;
+         }
 
          /* ===== GitHub Stars Badge ===== */
          .github-stars {
@@ -323,7 +353,10 @@
             border-bottom: 1px solid #1a1a1a;
          }
          .nav-links a::after { display: none; }
+         .nav-links a.donate-tab::after { display: block; }
+         .nav-links a.donate-tab::before { display: block; }
          .nav-links a:hover { color: #e0e0e0; background: transparent; }
+         .nav-links a.donate-tab:hover { color: #ffb86c; }
          .github-stars { margin-left: 0; font-size: 13px; }
          .hero { padding: 60px 20px 40px; }
          .content { padding: 40px 20px; }
@@ -353,8 +386,9 @@
             <li><a href="#about" data-i18n="nav.about">About</a></li>
             <li><a href="#usage" data-i18n="nav.usage">Usage</a></li>
             <li><a href="#contact" data-i18n="contact.nav">Contact</a></li>
+            <li><a class="donate-tab" href="donate.html" data-i18n="nav.donate">💰 Donate</a></li>
             <li>
-               <a href="https://github.com/BlendLog/MinerSearch"
+               <a class="github-link" href="https://github.com/BlendLog/MinerSearch"
                   target="_blank"
                   rel="noopener">
                <i class="fab fa-github"></i> GitHub
@@ -381,7 +415,7 @@
          <span data-i18n="hero.telegramChannel">Telegram Channel</span>
       </a>
    </div>
-   <span class="download-badge" id="dl-count"><i class="fas fa-download"></i> --- <span data-i18n="downloads.text">downloads</span></span>
+   <span class="download-badge" id="dl-count"><i class="fas fa-download"></i><span class="dl-num">---</span> <span data-i18n="downloads.text"></span></span>
    <span class="windows-tag"
    data-i18n="hero.window-tag">
          For Windows 8.1, 10, 11
@@ -578,6 +612,8 @@
                          }
                      }
                  });
+
+                 document.documentElement.lang = lang;
          
                  const desc = getNested(dict, 'seo.description');
                  if (desc) {
@@ -618,23 +654,60 @@
          function getNested(obj, path) {
              return path.split('.').reduce((o, k) => (o && o[k] !== undefined) ? o[k] : undefined, obj);
          }
-         
+
+         function highlightActiveSection() {
+             const sections = Array.from(document.querySelectorAll('section[id]'));
+             const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+             let activeId = 'home';
+             const targetLine = window.innerHeight * 0.35;
+
+             const visibleSection = sections.find(section => {
+                 const rect = section.getBoundingClientRect();
+                 return rect.top <= targetLine && rect.bottom > targetLine;
+             });
+
+             if (window.scrollY === 0) {
+                 activeId = 'home';
+             } else if (visibleSection) {
+                 activeId = visibleSection.id;
+             } else if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 10) {
+                 activeId = sections[sections.length - 1]?.id || activeId;
+             } else {
+                 const aboveSections = sections.filter(section => section.getBoundingClientRect().top <= targetLine);
+                 if (aboveSections.length > 0) {
+                     activeId = aboveSections[aboveSections.length - 1].id;
+                 }
+             }
+
+             navLinks.forEach(link => {
+                 const href = link.getAttribute('href');
+                 link.classList.toggle('active', href === `#${activeId}`);
+             });
+         }
+
+         function setupSectionHighlighting() {
+             highlightActiveSection();
+             window.addEventListener('scroll', () => {
+                 highlightActiveSection();
+             }, { passive: true });
+         }
+
          document.addEventListener('DOMContentLoaded', () => {
              const lang = (navigator.language || '').slice(0, 2) === 'en' ? 'en' : 'ru';
              loadLanguage(lang);
+             setupSectionHighlighting();
+             requestAnimationFrame(highlightActiveSection);
          });
-             
+
+         window.addEventListener('hashchange', highlightActiveSection);
+
          document.querySelectorAll('.feature-accordion-item').forEach(item => {
-            item.addEventListener('toggle', () => {
-                if (!item.open) return;
-                document.querySelectorAll('.feature-accordion-item').forEach(other => {
-                    if (other !== item) other.open = false;
-                });
-            });
-        });
-         
-         window.addEventListener('load', () => {
-             window.scrollTo(0, 0);
+             item.addEventListener('toggle', () => {
+                 if (!item.open) return;
+                 document.querySelectorAll('.feature-accordion-item').forEach(other => {
+                     if (other !== item) other.open = false;
+                 });
+             });
          });
 
          // ===== GitHub Stars Badge (with cache) =====
@@ -714,14 +787,21 @@
              const el = document.getElementById('dl-count');
              if (!el) return;
 
+             console.log('[fetchTotalDownloads] initial innerHTML:', el.innerHTML);
+
              // Попробуем из кэша
              const cached = localStorage.getItem('gh_downloads_cache');
+             let valueFromCache = null;
              if (cached) {
                  try {
-                     const { value, timestamp } = JSON.parse(cached);
-                     if (Date.now() - timestamp < 3600_000) { // 1 час
-                         el.innerHTML = `<i class="fas fa-download"></i> ${value}`;
+                     const parsed = JSON.parse(cached);
+                     console.log('[fetchTotalDownloads] cache content:', parsed);
+                     valueFromCache = parsed.value;
+                     if (Date.now() - parsed.timestamp < 3600_000) { // 1 час
+                         el.querySelector('.dl-num').textContent = valueFromCache;
                          return;
+                     } else {
+                         console.log('[fetchTotalDownloads] cache expired');
                      }
                  } catch(e) {}
              }
@@ -729,7 +809,6 @@
              try {
                  const res = await fetch('https://api.github.com/repos/BlendLog/MinerSearch/releases');
                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                 const releases = await res.json();
 
                  let totalDownloads = 0;
                  for (const release of releases) {
@@ -742,12 +821,12 @@
 
                  function formatDownloads(n) {
                      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-                     if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+                     if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
                      return String(n);
                  }
 
-                 const formatted = formatDownloads(totalDownloads) + '+ downloads';
-                 el.innerHTML = `<i class="fas fa-download"></i> ${formatted}`;
+                 const formatted = formatDownloads(totalDownloads);
+                 el.querySelector('.dl-num').textContent = formatted;
                  localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
              } catch (e) {
                  console.warn('Failed to fetch download count:', e);
