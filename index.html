@@ -787,15 +787,12 @@
              const el = document.getElementById('dl-count');
              if (!el) return;
 
-             console.log('[fetchTotalDownloads] initial innerHTML:', el.innerHTML);
-
              // Попробуем из кэша
              const cached = localStorage.getItem('gh_downloads_cache');
              let valueFromCache = null;
              if (cached) {
                  try {
                      const parsed = JSON.parse(cached);
-                     console.log('[fetchTotalDownloads] cache content:', parsed);
                      valueFromCache = parsed.value;
                      if (Date.now() - parsed.timestamp < 3600_000) { // 1 час
                          el.querySelector('.dl-num').textContent = valueFromCache;
@@ -810,8 +807,10 @@
                  const res = await fetch('https://api.github.com/repos/BlendLog/MinerSearch/releases');
                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
+                 const data = await res.json();
+
                  let totalDownloads = 0;
-                 for (const release of releases) {
+                 for (const release of data) {
                      if (release.assets) {
                          for (const asset of release.assets) {
                              totalDownloads += asset.download_count || 0;
