@@ -1,6 +1,6 @@
 {
-  "title": "MinerSearch - Поиск и удаление майнеров",
-  "titleSupport": "MinerSearch | Поддержать проект",
+  "title": "МinerSearch - Поиск и удалениe майнеров",
+  "titleSupport": "МinerSearch | Поддержать проект",
 
   "seo": {
     "description": "Бесплатная утилита для автоматического обнаружения и удаления скрытых майнеров на Windows."
@@ -14,7 +14,7 @@
     "donate": "💰 Поддержать"
   },
   "hero": {
-    "title": "МinerSearch - поиск и удаление майнеров",
+    "title": "MinerSearch - поиск и удаление майнеров",
     "subtitle": "Бесплатная утилита для автоматического поиска и удаления майнеров с ПК.",
     "downloadBtn": "Скачать MinerSearch",
     "usageBtn": "Как использовать",
