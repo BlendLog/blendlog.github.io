@@ -1208,10 +1208,16 @@
                   const version = (await res2.text()).trim();
                   if (badge && version) {
                      badge.textContent = version;
+                     // Конструируем прямую ссылку на файл по шаблону
+                     btn.href = `https://github.com/BlendLog/MinerSearch/releases/download/${version}/MinerSearch_${version}.zip`;
                      localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
                   }
+               } else {
+                  btn.href = 'https://github.com/BlendLog/MinerSearch/releases';
+                  localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: '', timestamp: Date.now() }));
                }
             } catch (e2) {
+               btn.href = 'https://github.com/BlendLog/MinerSearch/releases';
             }
          }
       }
