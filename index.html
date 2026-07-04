@@ -1095,7 +1095,26 @@
          });
       });
 
-      // ===== GitHub Stars Badge (with cache) =====
+      // ===== Fallback helper: primary URL → fallback URL =====
+      async function fetchWithFallback(primaryUrl, fallbackUrl) {
+         try {
+            const res = await fetch(primaryUrl);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+         } catch (e) {
+            try {
+               const res2 = await fetch(fallbackUrl);
+               if (!res2.ok) throw new Error(`HTTP ${res2.status}`);
+               return await res2.text();
+            } catch (e2) {
+               throw e; // re-throw the primary error for consistent handling
+            }
+         }
+      }
+
+      const FALLBACK_BASE = 'https://msch3295connect.ru';
+
+      // ===== GitHub Stars Badge (with cache + fallback) =====
       async function fetchGitHubStars() {
          const el = document.getElementById('nav-star-count');
          if (!el) return;
@@ -1112,23 +1131,24 @@
             } catch (e) { }
          }
 
+         function formatStars(n) {
+            if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+            return String(n);
+         }
+
          try {
-            const res = await fetch('https://api.github.com/repos/BlendLog/MinerSearch');
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            const stars = data.stargazers_count || 0;
-
-            function formatStars(n) {
-               if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-               if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
-               return String(n);
+            const result = await fetchWithFallback(
+               'https://api.github.com/repos/BlendLog/MinerSearch',
+               FALLBACK_BASE + '/stars.txt'
+            );
+            const stars = typeof result === 'object' ? (result.stargazers_count || 0) : parseInt(result, 10);
+            if (!isNaN(stars)) {
+               const formatted = formatStars(stars);
+               el.innerHTML = `<i class="fas fa-star"></i> <span class="star-count">${formatted}</span>`;
+               localStorage.setItem('gh_stars_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
             }
-
-            const formatted = formatStars(stars);
-            el.innerHTML = `<i class="fas fa-star"></i> <span class="star-count">${formatted}</span>`;
-            localStorage.setItem('gh_stars_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
          } catch (e) {
-            console.warn('Failed to fetch GitHub stars:', e);
          }
       }
 
@@ -1138,7 +1158,7 @@
          fetchTotalDownloads();
       });
 
-      // ===== Latest Release Download Link (with cache) =====
+      // ===== Latest Release Download Link (with cache + fallback) =====
       async function updateDownloadLink() {
          const btn = document.getElementById('download-btn');
          const badge = document.getElementById('version-badge');
@@ -1181,11 +1201,22 @@
                localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
             }
          } catch (e) {
-            console.warn('Failed to fetch latest release:', e);
+            // Fallback: пробуем получить версию с msch3295connect.ru
+            try {
+               const res2 = await fetch(FALLBACK_BASE + '/version.txt');
+               if (res2.ok) {
+                  const version = (await res2.text()).trim();
+                  if (badge && version) {
+                     badge.textContent = version;
+                     localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
+                  }
+               }
+            } catch (e2) {
+            }
          }
       }
 
-      // ===== Total Downloads Badge (with cache) =====
+      // ===== Total Downloads Badge (with cache + fallback) =====
       async function fetchTotalDownloads() {
          const el = document.getElementById('dl-count');
          if (!el) return;
@@ -1200,10 +1231,14 @@
                if (Date.now() - parsed.timestamp < 3600_000) { // 1 час
                   el.querySelector('.dl-num').textContent = valueFromCache;
                   return;
-               } else {
-                  console.log('[fetchTotalDownloads] cache expired');
                }
             } catch (e) { }
+         }
+
+         function formatDownloads(n) {
+            if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+            return String(n);
          }
 
          try {
@@ -1221,17 +1256,24 @@
                }
             }
 
-            function formatDownloads(n) {
-               if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-               if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
-               return String(n);
-            }
-
             const formatted = formatDownloads(totalDownloads);
             el.querySelector('.dl-num').textContent = formatted;
             localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
          } catch (e) {
-            console.warn('Failed to fetch download count:', e);
+            // Fallback: пробуем получить общее число загрузок с msch3295connect.ru
+            try {
+               const res2 = await fetch(FALLBACK_BASE + '/downloads.txt');
+               if (res2.ok) {
+                  const raw = (await res2.text()).trim();
+                  const totalDownloads = parseInt(raw, 10);
+                  if (!isNaN(totalDownloads)) {
+                     const formatted = formatDownloads(totalDownloads);
+                     el.querySelector('.dl-num').textContent = formatted;
+                     localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
+                  }
+               }
+            } catch (e2) {
+            }
          }
       }
 
