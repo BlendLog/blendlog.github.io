@@ -1100,12 +1100,12 @@
          try {
             const res = await fetch(primaryUrl);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return await res.json();
+            return await res.text();
          } catch (e) {
             try {
                const res2 = await fetch(fallbackUrl);
                if (!res2.ok) throw new Error(`HTTP ${res2.status}`);
-               return await res2.text();
+               return await res2.json();
             } catch (e2) {
                throw e; // re-throw the primary error for consistent handling
             }
@@ -1139,8 +1139,8 @@
 
          try {
             const result = await fetchWithFallback(
-               'https://api.github.com/repos/BlendLog/MinerSearch',
-               FALLBACK_BASE + '/stars.txt'
+               FALLBACK_BASE + '/stars.txt',
+               'https://api.github.com/repos/BlendLog/MinerSearch'
             );
             const stars = typeof result === 'object' ? (result.stargazers_count || 0) : parseInt(result, 10);
             if (!isNaN(stars)) {
@@ -1178,43 +1178,44 @@
          }
 
          try {
-            const res = await fetch('https://api.github.com/repos/BlendLog/MinerSearch/releases/latest');
+            const res = await fetch(FALLBACK_BASE + '/version.txt');
             if (res.ok) {
-               const data = await res.json();
-               const tag = data.tag_name || '';
-               const version = tag.startsWith('v') ? tag : (tag ? 'v' + tag : '');
-
-               // Ищем ассет с именем MinerSearch_v*.zip
-               let directUrl = null;
-               if (data.assets && data.assets.length) {
-                  const pattern = new RegExp('^MinerSearch_v[\\d.]+(?:_\\w+)?\\.zip$');
-                  for (const asset of data.assets) {
-                     if (pattern.test(asset.name)) {
-                        directUrl = asset.browser_download_url;
-                        break;
-                     }
-                  }
+               const version = (await res.text()).trim();
+               if (badge && version) {
+                  badge.textContent = version;
+                  // Конструируем прямую ссылку на файл по шаблону
+                  btn.href = `https://github.com/BlendLog/MinerSearch/releases/download/${version}/MinerSearch_${version}.zip`;
+                  localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
                }
-
-               btn.href = directUrl || data.html_url || 'https://github.com/BlendLog/MinerSearch/releases';
-               if (badge && version) badge.textContent = version;
-               localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
+            } else {
+               throw new Error('HTTP ' + res.status);
             }
          } catch (e) {
-            // Fallback: пробуем получить версию с msch3295connect.ru
+            // Fallback: пробуем получить с api.github.com
             try {
-               const res2 = await fetch(FALLBACK_BASE + '/version.txt');
+               const res2 = await fetch('https://api.github.com/repos/BlendLog/MinerSearch/releases/latest');
                if (res2.ok) {
-                  const version = (await res2.text()).trim();
-                  if (badge && version) {
-                     badge.textContent = version;
-                     // Конструируем прямую ссылку на файл по шаблону
-                     btn.href = `https://github.com/BlendLog/MinerSearch/releases/download/${version}/MinerSearch_${version}.zip`;
-                     localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
+                  const data = await res2.json();
+                  const tag = data.tag_name || '';
+                  const version = tag.startsWith('v') ? tag : (tag ? 'v' + tag : '');
+
+                  // Ищем ассет с именем MinerSearch_v*.zip
+                  let directUrl = null;
+                  if (data.assets && data.assets.length) {
+                     const pattern = new RegExp('^MinerSearch_v[\\d.]+(?:_\\w+)?\\.zip$');
+                     for (const asset of data.assets) {
+                        if (pattern.test(asset.name)) {
+                           directUrl = asset.browser_download_url;
+                           break;
+                        }
+                     }
                   }
+
+                  btn.href = directUrl || data.html_url || 'https://github.com/BlendLog/MinerSearch/releases';
+                  if (badge && version) badge.textContent = version;
+                  localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
                } else {
-                  btn.href = 'https://github.com/BlendLog/MinerSearch/releases';
-                  localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: '', timestamp: Date.now() }));
+                  throw new Error('HTTP ' + res2.status);
                }
             } catch (e2) {
                btn.href = 'https://github.com/BlendLog/MinerSearch/releases';
@@ -1248,36 +1249,37 @@
          }
 
          try {
-            const res = await fetch('https://api.github.com/repos/BlendLog/MinerSearch/releases');
+            const res = await fetch(FALLBACK_BASE + '/downloads.txt');
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-            const data = await res.json();
-
-            let totalDownloads = 0;
-            for (const release of data) {
-               if (release.assets) {
-                  for (const asset of release.assets) {
-                     totalDownloads += asset.download_count || 0;
-                  }
-               }
+            const raw = (await res.text()).trim();
+            const totalDownloads = parseInt(raw, 10);
+            if (!isNaN(totalDownloads)) {
+               const formatted = formatDownloads(totalDownloads);
+               el.querySelector('.dl-num').textContent = formatted;
+               localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
+               return;
             }
-
-            const formatted = formatDownloads(totalDownloads);
-            el.querySelector('.dl-num').textContent = formatted;
-            localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
          } catch (e) {
-            // Fallback: пробуем получить общее число загрузок с msch3295connect.ru
+            // Fallback: пробуем получить общее число загрузок с api.github.com
             try {
-               const res2 = await fetch(FALLBACK_BASE + '/downloads.txt');
-               if (res2.ok) {
-                  const raw = (await res2.text()).trim();
-                  const totalDownloads = parseInt(raw, 10);
-                  if (!isNaN(totalDownloads)) {
-                     const formatted = formatDownloads(totalDownloads);
-                     el.querySelector('.dl-num').textContent = formatted;
-                     localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
+               const res2 = await fetch('https://api.github.com/repos/BlendLog/MinerSearch/releases');
+               if (!res2.ok) throw new Error(`HTTP ${res2.status}`);
+
+               const data = await res2.json();
+
+               let totalDownloads = 0;
+               for (const release of data) {
+                  if (release.assets) {
+                     for (const asset of release.assets) {
+                        totalDownloads += asset.download_count || 0;
+                     }
                   }
                }
+
+               const formatted = formatDownloads(totalDownloads);
+               el.querySelector('.dl-num').textContent = formatted;
+               localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
             } catch (e2) {
             }
          }
