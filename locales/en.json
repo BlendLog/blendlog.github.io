@@ -23,12 +23,31 @@
   "about": {
     "desc1": "MinerSearch is a utility for detecting suspicious files, processes, services and other artifacts associated with hidden cryptocurrency miners.",
     "desc2": "The utility scans the system, suspends malicious processes, moves files to quarantine and generates detailed reports. Console mode and command-line parameters are supported.",
-    "f1": { "title": "Process Scanning", "desc": "Search for suspicious processes by signatures, ports and behavior" },
-    "f2": { "title": "Registry Check", "desc": "Analysis of startup files, unwanted settings, and suspicious entries in the system registry." },
-    "f3": { "title": "WMI and Services", "desc": "Check WMI integrity and suspicious Windows services" },
-    "f4": { "title": "Task Scheduler", "desc": "Analysis of the task scheduler and malware persistence mechanisms. Analysis in Windows Safe Mode is supported." },
-    "f5": { "title": "Advanced Scanning Options", "desc": "Wide range of launch parameters for precise scanning configuration", "more": "More" },
-    "f6": { "title": "Logging", "desc": "Detailed reports on each scanning stage and found threats" }
+    "f1": {
+      "title": "Process Scanning",
+      "desc": "Search for suspicious processes by signatures, ports and behavior"
+    },
+    "f2": {
+      "title": "Registry Check",
+      "desc": "Analysis of startup files, unwanted settings, and suspicious entries in the system registry."
+    },
+    "f3": {
+      "title": "WMI and Services",
+      "desc": "Check WMI integrity and suspicious Windows services"
+    },
+    "f4": {
+      "title": "Task Scheduler",
+      "desc": "Analysis of the task scheduler and malware persistence mechanisms. Analysis in Windows Safe Mode is supported."
+    },
+    "f5": {
+      "title": "Advanced Scanning Options",
+      "desc": "Wide range of launch parameters for precise scanning configuration",
+      "more": "More"
+    },
+    "f6": {
+      "title": "Logging",
+      "desc": "Detailed reports on each scanning stage and found threats"
+    }
   },
   "usage": {
     "s1": "Download the latest version from GitHub Releases and extract the archive into a separate folder.",
@@ -51,11 +70,15 @@
   "downloads": {
     "text": "downloads"
   },
-    "heroDonate": {
+  "heroDonate": {
     "title": "Support the Project",
     "subtitle": "If the utility was useful, you can support the development in any convenient way. This support helps continue the fight against miners and keeps development moving forward. Thank you!"
   },
   "donate": {
+    "cloudtips": {
+      "title": "Cloudtips",
+      "desc": "SBP transfer"
+    },
     "boosty": {
       "title": "Boosty",
       "desc": "Visit the author's page on Boosty"
