@@ -353,6 +353,130 @@
          margin-top: 6px;
       }
 
+      /* ===== Section Title ===== */
+      .section-title {
+         color: #e0e0e0;
+         font-size: 22px;
+         font-weight: 600;
+         margin-bottom: 24px;
+      }
+
+      /* ===== QR Donation Cards ===== */
+      .qr-section {
+         margin-bottom: 40px;
+      }
+
+      .qr-grid {
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
+         gap: 16px;
+         margin-top: 20px;
+         list-style: none;
+      }
+
+      .qr-card {
+         perspective: 1000px;
+         cursor: pointer;
+         background: transparent;
+         border: none;
+         padding: 0;
+         -webkit-tap-highlight-color: transparent;
+      }
+
+      .qr-card:focus-visible {
+         outline: 2px solid #3a6bca;
+         outline-offset: 3px;
+         border-radius: 12px;
+      }
+
+      .qr-card-inner {
+         position: relative;
+         width: 100%;
+         aspect-ratio: 1 / 1;
+         transform-style: preserve-3d;
+         -webkit-transform-style: preserve-3d;
+         transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .qr-card.flipped .qr-card-inner {
+         transform: rotateY(180deg);
+      }
+
+      .qr-card-face {
+         position: absolute;
+         inset: 0;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         text-align: center;
+         padding: 16px;
+         border-radius: 12px;
+         border: 1px solid #1a1a1a;
+         backface-visibility: hidden;
+         -webkit-backface-visibility: hidden;
+         overflow: hidden;
+      }
+
+      .qr-card-front {
+         background-color: #111;
+         transition: border-color 0.2s ease;
+      }
+
+      .qr-card:hover .qr-card-front {
+         border-color: #3a6bca;
+      }
+
+      .qr-card-back {
+         background-color: #fff;
+         transform: rotateY(180deg);
+      }
+
+      .qr-logo {
+         width: 72px;
+         height: 72px;
+         object-fit: contain;
+         padding: 12px;
+         border-radius: 16px;
+         background-color: #1a1f2e;
+      }
+
+      .qr-card-name {
+         color: #c0c0c0;
+         font-size: 15px;
+         font-weight: 600;
+         margin-top: 12px;
+      }
+
+      .qr-card-hint {
+         color: #555;
+         font-size: 12px;
+         margin-top: 6px;
+         line-height: 1.4;
+      }
+
+      .qr-img {
+         width: 76%;
+         aspect-ratio: 1 / 1;
+         display: block;
+         object-fit: contain;
+         background-color: #fff;
+         border-radius: 4px;
+      }
+
+      .qr-card-note {
+         color: #666;
+         font-size: 12px;
+         margin-top: 10px;
+         line-height: 1.4;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .qr-card-inner {
+            transition: none;
+         }
+      }
+
       /* ===== Footer ===== */
       footer {
          text-align: center;
@@ -507,6 +631,19 @@
             align-items: stretch;
          }
 
+         .qr-grid {
+            grid-template-columns: 1fr;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+         }
+
+         .qr-logo {
+            width: 60px;
+            height: 60px;
+            padding: 10px;
+         }
+
          footer {
             padding: 30px 20px;
          }
@@ -544,6 +681,57 @@
    </section>
    <!-- Content -->
    <div class="content">
+      <!-- QR Transfer Cards -->
+      <section class="section qr-section">
+         <h2 class="section-title" data-i18n="donate.qr.title">Перевод по QR-коду</h2>
+         <ul class="qr-grid">
+            <!-- Sber -->
+            <li class="qr-card" role="button" tabindex="0" aria-pressed="false">
+               <div class="qr-card-inner">
+                  <div class="qr-card-face qr-card-front">
+                     <img class="qr-logo" src="icons/sber.png" alt="" aria-hidden="true">
+                     <div class="qr-card-name" data-i18n="donate.qr.sber">Сбербанк</div>
+                     <div class="qr-card-hint" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                  </div>
+                  <div class="qr-card-face qr-card-back">
+                     <img class="qr-img" src="images/qr/sber.png" data-i18n-alt="donate.qr.alt.sber"
+                        alt="QR-код Сбербанк">
+                     <div class="qr-card-note" data-i18n="donate.qr.scan">Отсканируйте QR в приложении банка</div>
+                  </div>
+               </div>
+            </li>
+            <!-- Alfa-Bank -->
+            <li class="qr-card" role="button" tabindex="0" aria-pressed="false">
+               <div class="qr-card-inner">
+                  <div class="qr-card-face qr-card-front">
+                     <img class="qr-logo" src="icons/alfa.png" alt="" aria-hidden="true">
+                     <div class="qr-card-name" data-i18n="donate.qr.alfa">Альфа-Банк</div>
+                     <div class="qr-card-hint" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                  </div>
+                  <div class="qr-card-face qr-card-back">
+                     <img class="qr-img" src="images/qr/alfa.png" data-i18n-alt="donate.qr.alt.alfa"
+                        alt="QR-код Альфа-Банк">
+                     <div class="qr-card-note" data-i18n="donate.qr.scan">Отсканируйте QR в приложении банка</div>
+                  </div>
+               </div>
+            </li>
+            <!-- YooMoney -->
+            <li class="qr-card" role="button" tabindex="0" aria-pressed="false">
+               <div class="qr-card-inner">
+                  <div class="qr-card-face qr-card-front">
+                     <img class="qr-logo" src="icons/yoomoney.png" alt="" aria-hidden="true">
+                     <div class="qr-card-name" data-i18n="donate.qr.yoomoney">ЮMoney</div>
+                     <div class="qr-card-hint" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                  </div>
+                  <div class="qr-card-face qr-card-back">
+                     <img class="qr-img" src="images/qr/yoomoney.png" data-i18n-alt="donate.qr.alt.yoomoney"
+                        alt="QR-код ЮMoney">
+                     <div class="qr-card-note" data-i18n="donate.qr.scan">Отсканируйте QR в приложении банка</div>
+                  </div>
+               </div>
+            </li>
+         </ul>
+      </section>
       <section class="section">
          <ul class="donate-grid">
             <!-- Cloudtips -->
@@ -639,6 +827,14 @@
                }
             });
 
+            document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+               const key = el.getAttribute('data-i18n-alt');
+               const value = getNested(dict, key);
+               if (value !== undefined && value !== null) {
+                  el.alt = value;
+               }
+            });
+
             document.documentElement.lang = lang;
 
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -718,10 +914,38 @@
          });
       }
 
+      function setupQrCards() {
+         const cards = document.querySelectorAll('.qr-card');
+         if (!cards.length) return;
+
+         function toggleCard(card) {
+            const wasFlipped = card.classList.contains('flipped');
+            cards.forEach(c => {
+               c.classList.remove('flipped');
+               c.setAttribute('aria-pressed', 'false');
+            });
+            if (!wasFlipped) {
+               card.classList.add('flipped');
+               card.setAttribute('aria-pressed', 'true');
+            }
+         }
+
+         cards.forEach(card => {
+            card.addEventListener('click', () => toggleCard(card));
+            card.addEventListener('keydown', (event) => {
+               if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+                  event.preventDefault();
+                  toggleCard(card);
+               }
+            });
+         });
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
          const lang = (navigator.language || '').slice(0, 2) === 'en' ? 'en' : 'ru';
          loadLanguage(lang);
          setupCopyButtons();
+         setupQrCards();
       });
 
       // ===== Mobile Nav Toggle =====

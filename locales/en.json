@@ -91,6 +91,19 @@
       "title": "USDT (TRC-20)",
       "desc": "TW2fA21QdywMUsYL3SXXzvAXXaKeSmbGDn"
     },
+    "qr": {
+      "title": "QR code transfer",
+      "sber": "Sber",
+      "alfa": "Alfa-Bank",
+      "yoomoney": "YooMoney",
+      "hint": "Click to show the QR code",
+      "scan": "Scan the QR in your bank app",
+      "alt": {
+        "sber": "Sber QR code",
+        "alfa": "Alfa-Bank QR code",
+        "yoomoney": "YooMoney QR code"
+      }
+    },
     "copy": "Copy",
     "copied": "Copied"
   },
