@@ -2,7 +2,7 @@
   "title": "МinerSearch - Miner Detection and Removal",
   "titleSupport": "МinerSearch | Support the Project",
   "seo": {
-    "description": "Free utility for automatic detection and removal of hidden miners on Windows."
+    "description": "Free utility for automatic detection and removal of hidden miners on Windows 8.1, 10 and 11. Requires .NET Framework 4.8."
   },
   "siteName": "MinerSearch",
   "nav": {
@@ -18,7 +18,7 @@
     "downloadBtn": "Download MinerSearch",
     "usageBtn": "How to Use",
     "telegramChannel": "Telegram Channel",
-    "window-tag": "For Windows 8.1, 10, 11"
+    "window-tag": "For Windows 8.1, 10, 11 · .NET Framework 4.8 required"
   },
   "about": {
     "desc1": "MinerSearch is a utility for detecting suspicious files, processes, services and other artifacts associated with hidden cryptocurrency miners.",
@@ -52,8 +52,9 @@
   "usage": {
     "s1": "Download the latest version from GitHub Releases and extract the archive into a separate folder.",
     "s2": "Run application as administrator. On first launch, program offers to send scan results – this is optional.",
-    "s3": "Wait for scanning completion. After that, a form opens with brief report on eliminated threats.",
-    "s4": "Click \"Open Report\" to view detailed report or \"Quarantine\" to manage quarantine."
+    "s3": "Wait for the scan to complete.",
+    "s4": "If unknown threats are found, the \"Threat Review\" window opens: choose an action for each item (Cure, Quarantine, Delete, Terminate, Disable, Skip) or set a single action for all. The \"Set recommended\" button restores the analyzers' recommendations; automatic acceptance can be enabled in settings or with the -norev parameter.",
+    "s5": "When finished, a form opens with a brief report. \"Open Report\" shows the detailed report, and \"Open Quarantine\" opens the quarantine manager, where you can delete or restore files, scheduled tasks and services."
   },
   "language-change": "To change the language, create a file",
   "language-cfg": "language.cfg",
