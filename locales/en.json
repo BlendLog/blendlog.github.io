@@ -98,7 +98,8 @@
       "alfa": "Alfa-Bank",
       "yoomoney": "YooMoney",
       "hint": "Click to show the QR code",
-      "scan": "Scan the QR in your bank app",
+      "tap": "Tap to open the link",
+      "hold": "Press and hold to open the link",
       "alt": {
         "sber": "Sber QR code",
         "alfa": "Alfa-Bank QR code",

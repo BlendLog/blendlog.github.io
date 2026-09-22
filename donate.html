@@ -18,6 +18,11 @@
          box-sizing: border-box;
       }
 
+      :root {
+         --qr-card-size: 200px;
+         --qr-gap: 16px;
+      }
+
       body {
          background-color: #0d0d0d;
          color: #ffffff;
@@ -207,8 +212,12 @@
       .donate-grid {
          display: grid;
          grid-template-columns: 1fr;
-         gap: 12px;
+         list-style-type: none;
+         gap: var(--qr-gap);
          margin-top: 20px;
+         max-width: calc(3 * var(--qr-card-size) + 2 * var(--qr-gap));
+         margin-left: auto;
+         margin-right: auto;
       }
 
       .donate-item {
@@ -353,23 +362,16 @@
          margin-top: 6px;
       }
 
-      /* ===== Section Title ===== */
-      .section-title {
-         color: #e0e0e0;
-         font-size: 22px;
-         font-weight: 600;
-         margin-bottom: 24px;
-      }
-
       /* ===== QR Donation Cards ===== */
       .qr-section {
-         margin-bottom: 40px;
+         margin-bottom: 16px;
       }
 
       .qr-grid {
          display: grid;
-         grid-template-columns: repeat(3, 1fr);
-         gap: 16px;
+         grid-template-columns: repeat(3, var(--qr-card-size));
+         justify-content: center;
+         gap: var(--qr-gap);
          margin-top: 20px;
          list-style: none;
       }
@@ -381,6 +383,10 @@
          border: none;
          padding: 0;
          -webkit-tap-highlight-color: transparent;
+         touch-action: manipulation;
+         -webkit-user-select: none;
+         user-select: none;
+         -webkit-touch-callout: none;
       }
 
       .qr-card:focus-visible {
@@ -423,8 +429,10 @@
          transition: border-color 0.2s ease;
       }
 
-      .qr-card:hover .qr-card-front {
-         border-color: #3a6bca;
+      @media (hover: hover) {
+         .qr-card:hover .qr-card-front {
+            border-color: #3a6bca;
+         }
       }
 
       .qr-card-back {
@@ -455,13 +463,18 @@
          line-height: 1.4;
       }
 
+      .qr-hint-tap {
+         display: none;
+      }
+
       .qr-img {
-         width: 76%;
+         width: 72%;
          aspect-ratio: 1 / 1;
          display: block;
          object-fit: contain;
          background-color: #fff;
          border-radius: 4px;
+         -webkit-user-drag: none;
       }
 
       .qr-card-note {
@@ -632,10 +645,8 @@
          }
 
          .qr-grid {
-            grid-template-columns: 1fr;
-            max-width: 320px;
-            margin-left: auto;
-            margin-right: auto;
+            grid-template-columns: var(--qr-card-size);
+            justify-content: center;
          }
 
          .qr-logo {
@@ -646,6 +657,73 @@
 
          footer {
             padding: 30px 20px;
+         }
+      }
+
+      /* ===== Mobile QR Rows (touch devices) ===== */
+      @media (hover: none) and (pointer: coarse) {
+         .qr-grid {
+            grid-template-columns: 1fr;
+            justify-content: stretch;
+         }
+
+         .qr-card {
+            perspective: none;
+         }
+
+         .qr-card-inner,
+         .qr-card.flipped .qr-card-inner {
+            aspect-ratio: auto;
+            transform: none;
+            transition: none;
+         }
+
+         .qr-card-face {
+            position: static;
+         }
+
+         .qr-card-back {
+            display: none;
+         }
+
+         .qr-card-front {
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+            text-align: left;
+         }
+
+         .qr-card-info {
+            flex: 1 1 auto;
+            min-width: 0;
+         }
+
+         .qr-logo {
+            width: 40px;
+            height: 40px;
+            padding: 6px;
+            border-radius: 8px;
+            flex-shrink: 0;
+         }
+
+         .qr-card-name {
+            margin-top: 0;
+         }
+
+         .qr-card-hint {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 4px;
+         }
+
+         .qr-hint-flip {
+            display: none;
+         }
+
+         .qr-hint-tap {
+            display: block;
          }
       }
    </style>
@@ -683,20 +761,23 @@
    <div class="content">
       <!-- QR Transfer Cards -->
       <section class="section qr-section">
-         <h2 class="section-title" data-i18n="donate.qr.title">Перевод по QR-коду</h2>
          <ul class="qr-grid">
             <!-- Sber -->
             <li class="qr-card" role="button" tabindex="0" aria-pressed="false">
                <div class="qr-card-inner">
                   <div class="qr-card-face qr-card-front">
                      <img class="qr-logo" src="icons/sber.png" alt="" aria-hidden="true">
-                     <div class="qr-card-name" data-i18n="donate.qr.sber">Сбербанк</div>
-                     <div class="qr-card-hint" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                     <div class="qr-card-info">
+                        <div class="qr-card-name" data-i18n="donate.qr.sber">Сбербанк</div>
+                        <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы открыть ссылку</div>
+                     </div>
                   </div>
                   <div class="qr-card-face qr-card-back">
                      <img class="qr-img" src="images/qr/sber.png" data-i18n-alt="donate.qr.alt.sber"
-                        alt="QR-код Сбербанк">
-                     <div class="qr-card-note" data-i18n="donate.qr.scan">Отсканируйте QR в приложении банка</div>
+                        data-qr="aHR0cHM6Ly93d3cuc2JlcmJhbmsuY29tL3Ntcy9wYnBuP3JlcXVpc2l0ZU51bWJlcj05MDA5Mjc3OTgy"
+                        loading="lazy" decoding="async" alt="QR-код Сбербанк">
+                     <div class="qr-card-note" data-i18n="donate.qr.hold">Удерживайте, чтобы открыть ссылку</div>
                   </div>
                </div>
             </li>
@@ -705,13 +786,17 @@
                <div class="qr-card-inner">
                   <div class="qr-card-face qr-card-front">
                      <img class="qr-logo" src="icons/alfa.png" alt="" aria-hidden="true">
-                     <div class="qr-card-name" data-i18n="donate.qr.alfa">Альфа-Банк</div>
-                     <div class="qr-card-hint" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                     <div class="qr-card-info">
+                        <div class="qr-card-name" data-i18n="donate.qr.alfa">Альфа-Банк</div>
+                        <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы открыть ссылку</div>
+                     </div>
                   </div>
                   <div class="qr-card-face qr-card-back">
                      <img class="qr-img" src="images/qr/alfa.png" data-i18n-alt="donate.qr.alt.alfa"
-                        alt="QR-код Альфа-Банк">
-                     <div class="qr-card-note" data-i18n="donate.qr.scan">Отсканируйте QR в приложении банка</div>
+                        data-qr="aHR0cHM6Ly9jMmMuY2JycGF5LnJ1L0FTMUkwMDBBVjAxNDFEQUw4SDFBOE4yMzhRT1ZEUjBO"
+                        loading="lazy" decoding="async" alt="QR-код Альфа-Банк">
+                     <div class="qr-card-note" data-i18n="donate.qr.hold">Удерживайте, чтобы открыть ссылку</div>
                   </div>
                </div>
             </li>
@@ -720,13 +805,17 @@
                <div class="qr-card-inner">
                   <div class="qr-card-face qr-card-front">
                      <img class="qr-logo" src="icons/yoomoney.png" alt="" aria-hidden="true">
-                     <div class="qr-card-name" data-i18n="donate.qr.yoomoney">ЮMoney</div>
-                     <div class="qr-card-hint" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                     <div class="qr-card-info">
+                        <div class="qr-card-name" data-i18n="donate.qr.yoomoney">ЮMoney</div>
+                        <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
+                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы открыть ссылку</div>
+                     </div>
                   </div>
                   <div class="qr-card-face qr-card-back">
                      <img class="qr-img" src="images/qr/yoomoney.png" data-i18n-alt="donate.qr.alt.yoomoney"
-                        alt="QR-код ЮMoney">
-                     <div class="qr-card-note" data-i18n="donate.qr.scan">Отсканируйте QR в приложении банка</div>
+                        data-qr="aHR0cHM6Ly95b29tb25leS5ydS90by80MTAwMTE2MTEyNjQwOTY4"
+                        loading="lazy" decoding="async" alt="QR-код ЮMoney">
+                     <div class="qr-card-note" data-i18n="donate.qr.hold">Удерживайте, чтобы открыть ссылку</div>
                   </div>
                </div>
             </li>
@@ -918,26 +1007,117 @@
          const cards = document.querySelectorAll('.qr-card');
          if (!cards.length) return;
 
+         const LONG_PRESS_DELAY = 500;
+         const touchModeQuery = window.matchMedia('(hover: none) and (pointer: coarse)');
+         const isTouchMode = () => touchModeQuery.matches;
+
+         function setFlipped(card, flipped) {
+            card.classList.toggle('flipped', flipped);
+            card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
+         }
+
          function toggleCard(card) {
             const wasFlipped = card.classList.contains('flipped');
-            cards.forEach(c => {
-               c.classList.remove('flipped');
-               c.setAttribute('aria-pressed', 'false');
-            });
-            if (!wasFlipped) {
-               card.classList.add('flipped');
-               card.setAttribute('aria-pressed', 'true');
+            cards.forEach(c => setFlipped(c, false));
+            if (!wasFlipped) setFlipped(card, true);
+         }
+
+         function openQrLink(card) {
+            const img = card.querySelector('.qr-img');
+            const encoded = img && img.dataset.qr;
+            if (!encoded) return;
+
+            try {
+               window.open(atob(encoded), '_blank', 'noopener');
+            } catch (err) {
+               console.error('Failed to open QR link:', err);
             }
          }
 
          cards.forEach(card => {
-            card.addEventListener('click', () => toggleCard(card));
+            let pressTimer = null;
+            let longPressTriggered = false;
+            let suppressClick = false;
+
+            function cancelPress() {
+               if (pressTimer !== null) {
+                  clearTimeout(pressTimer);
+                  pressTimer = null;
+               }
+            }
+
+            function startPress(openOnTrigger) {
+               cancelPress();
+               if (isTouchMode()) return;
+               if (!card.classList.contains('flipped')) return;
+
+               pressTimer = setTimeout(() => {
+                  pressTimer = null;
+                  suppressClick = true;
+                  if (openOnTrigger) {
+                     openQrLink(card);
+                     setTimeout(() => { suppressClick = false; }, 1000);
+                  } else {
+                     longPressTriggered = true;
+                  }
+               }, LONG_PRESS_DELAY);
+            }
+
+            function endPress() {
+               cancelPress();
+               if (!longPressTriggered) return;
+
+               longPressTriggered = false;
+               suppressClick = true;
+               openQrLink(card);
+               setTimeout(() => { suppressClick = false; }, 1000);
+            }
+
+            function abortPress() {
+               cancelPress();
+               longPressTriggered = false;
+               suppressClick = false;
+            }
+
+            card.addEventListener('click', () => {
+               if (isTouchMode()) {
+                  openQrLink(card);
+                  return;
+               }
+
+               if (suppressClick) {
+                  suppressClick = false;
+                  return;
+               }
+
+               toggleCard(card);
+            });
+
             card.addEventListener('keydown', (event) => {
                if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
                   event.preventDefault();
-                  toggleCard(card);
+                  if (isTouchMode()) {
+                     openQrLink(card);
+                  } else {
+                     toggleCard(card);
+                  }
                }
             });
+
+            card.addEventListener('touchstart', () => startPress(false), { passive: true });
+            card.addEventListener('touchend', endPress);
+            card.addEventListener('touchcancel', abortPress);
+            card.addEventListener('touchmove', abortPress, { passive: true });
+
+            card.addEventListener('mousedown', (event) => {
+               if (event.button !== 0) return;
+               startPress(true);
+            });
+            card.addEventListener('mouseup', endPress);
+            card.addEventListener('mouseleave', abortPress);
+
+            card.addEventListener('dragstart', (event) => event.preventDefault());
+            card.addEventListener('contextmenu', (event) => event.preventDefault());
          });
       }
 
