@@ -85,12 +85,10 @@
       "desc": "Visit the author's page on Boosty"
     },
     "ton": {
-      "title": "Ton",
-      "desc": "UQDycad1nVoeE2lGVj-ONlQcR0rMTLUXOxTg6MW9jbfwzIWG"
+      "title": "Ton"
     },
     "usdt": {
-      "title": "USDT (TRC-20)",
-      "desc": "TW2fA21QdywMUsYL3SXXzvAXXaKeSmbGDn"
+      "title": "USDT (TRC-20)"
     },
     "qr": {
       "title": "QR code transfer",
@@ -98,14 +96,19 @@
       "alfa": "Alfa-Bank",
       "yoomoney": "YooMoney",
       "hint": "Click to show the QR code",
-      "tap": "Tap to open the link",
+      "tap": "Tap to show the card number",
+      "tapHide": "Tap to hide the card number",
       "hold": "Press and hold to open the link",
+      "numberError": "Number unavailable",
       "alt": {
         "sber": "Sber QR code",
         "alfa": "Alfa-Bank QR code",
         "yoomoney": "YooMoney QR code"
       }
     },
+    "walletHint": "Tap to show the wallet number",
+    "walletHintHide": "Tap to hide the number",
+    "linkHint": "Tap to open the link",
     "copy": "Copy",
     "copied": "Copied"
   },

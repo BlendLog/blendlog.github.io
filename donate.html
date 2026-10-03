@@ -275,6 +275,22 @@
          margin: 8px 0 0;
       }
 
+      .donate-card-info {
+         flex: 1 1 auto;
+         min-width: 0;
+      }
+
+      .donate-card-hint {
+         color: #888;
+         font-size: 14px;
+         line-height: 1.7;
+         margin: 8px 0 0;
+      }
+
+      .donate-hint-tap {
+         display: none;
+      }
+
       .donate-link {
          display: inline-flex;
          align-items: center;
@@ -484,6 +500,10 @@
          line-height: 1.4;
       }
 
+      .qr-card .qr-card-number-row {
+         display: none;
+      }
+
       @media (prefers-reduced-motion: reduce) {
          .qr-card-inner {
             transition: none;
@@ -688,6 +708,7 @@
 
          .qr-card-front {
             flex-direction: row;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: flex-start;
             gap: 16px;
@@ -697,6 +718,15 @@
          .qr-card-info {
             flex: 1 1 auto;
             min-width: 0;
+         }
+
+         .qr-card-number-row {
+            flex-basis: 100%;
+            margin-top: 0;
+         }
+
+         .qr-card.number-open .qr-card-number-row {
+            display: flex;
          }
 
          .qr-logo {
@@ -724,6 +754,61 @@
 
          .qr-hint-tap {
             display: block;
+         }
+
+         /* Donate cards share the QR row style on touch devices */
+         .donate-item {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+         }
+
+         .donate-item:focus-visible {
+            outline: 2px solid #3a6bca;
+            outline-offset: 3px;
+         }
+
+         .donate-card-header {
+            gap: 16px;
+            margin-bottom: 0;
+         }
+
+         .donate-card-title {
+            font-size: 15px;
+         }
+
+         .donate-card-text {
+            display: none;
+         }
+
+         .donate-hint-tap {
+            display: block;
+            margin-top: 4px;
+         }
+
+         .donate-link {
+            display: none;
+         }
+
+         .donate-icon img {
+            width: 40px;
+            height: 40px;
+            padding: 6px;
+            border-radius: 8px;
+         }
+
+         .donate-reveal .donate-address-row {
+            display: none;
+            margin-top: 12px;
+         }
+
+         .donate-reveal.number-open .donate-address-row {
+            display: flex;
          }
       }
    </style>
@@ -770,7 +855,12 @@
                      <div class="qr-card-info">
                         <div class="qr-card-name" data-i18n="donate.qr.sber">Сбербанк</div>
                         <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
-                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы открыть ссылку</div>
+                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты</div>
+                     </div>
+                     <div class="donate-address-row qr-card-number-row">
+                        <div class="crypto-address qr-card-number"
+                           data-card-number="MjIwMiAyMDgwIDQyNDIgMTUxMg=="></div>
+                        <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
                      </div>
                   </div>
                   <div class="qr-card-face qr-card-back">
@@ -789,7 +879,12 @@
                      <div class="qr-card-info">
                         <div class="qr-card-name" data-i18n="donate.qr.alfa">Альфа-Банк</div>
                         <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
-                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы открыть ссылку</div>
+                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты</div>
+                     </div>
+                     <div class="donate-address-row qr-card-number-row">
+                        <div class="crypto-address qr-card-number"
+                           data-card-number="MjIwMCAxNTQ1IDIyOTMgNjIzNQ=="></div>
+                        <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
                      </div>
                   </div>
                   <div class="qr-card-face qr-card-back">
@@ -808,7 +903,12 @@
                      <div class="qr-card-info">
                         <div class="qr-card-name" data-i18n="donate.qr.yoomoney">ЮMoney</div>
                         <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
-                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы открыть ссылку</div>
+                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты</div>
+                     </div>
+                     <div class="donate-address-row qr-card-number-row">
+                        <div class="crypto-address qr-card-number"
+                           data-card-number="NDEwMDExNjExMjY0MDk2OA=="></div>
+                        <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
                      </div>
                   </div>
                   <div class="qr-card-face qr-card-back">
@@ -824,54 +924,64 @@
       <section class="section">
          <ul class="donate-grid">
             <!-- Cloudtips -->
-            <li class="donate-item">
+            <li class="donate-item donate-open">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/cloudtips.png" alt="">
                   </div>
-                  <div>
+                  <div class="donate-card-info">
                      <h4 class="donate-card-title" data-i18n="donate.cloudtips.title">Cloudtips</h4>
                      <p class="donate-card-text" data-i18n="donate.cloudtips.desc">SBP Transfer</p>
+                     <p class="donate-card-hint donate-hint-tap" data-i18n="donate.linkHint">Нажмите, чтобы открыть
+                        ссылку</p>
                   </div>
                </div>
                <a class="donate-link" href="https://pay.cloudtips.ru/p/243342f4" target="_blank"
                   rel="noopener">pay.cloudtips.ru/p/243342f4</a>
             </li>
             <!-- Boosty -->
-            <li class="donate-item">
+            <li class="donate-item donate-open">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/boosty.png" alt=""></div>
-                  <div>
+                  <div class="donate-card-info">
                      <h4 class="donate-card-title" data-i18n="donate.boosty.title">Boosty</h4>
                      <p class="donate-card-text" data-i18n="donate.boosty.desc">Visit the author's page on Boosty</p>
+                     <p class="donate-card-hint donate-hint-tap" data-i18n="donate.linkHint">Нажмите, чтобы открыть
+                        ссылку</p>
                   </div>
                </div>
                <a class="donate-link" href="https://boosty.to/blendlog/donate" target="_blank"
                   rel="noopener">boosty.to/blendlog/donate</a>
             </li>
             <!-- Ton -->
-            <li class="donate-item">
+            <li class="donate-item donate-reveal">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/toncoin.png" alt=""></div>
-                  <div>
+                  <div class="donate-card-info">
                      <h4 class="donate-card-title">Ton</h4>
+                     <p class="donate-card-hint donate-hint-tap" data-i18n="donate.walletHint">Нажмите, чтобы показать
+                        номер кошелька</p>
                   </div>
                </div>
                <div class="donate-address-row">
-                  <div class="crypto-address">UQDycad1nVoeE2lGVj-ONlQcR0rMTLUXOxTg6MW9jbfwzIWG</div>
-                  <button type="button" class="copy-btn" data-i18n="donate.copy">Copy</button>
+                  <div class="crypto-address"
+                     data-card-number="VVFEeWNhZDFuVm9lRTJsR1ZqLU9ObFFjUjByTVRMVVhPeFRnNk1XOWpiZnd6SVdH"></div>
+                  <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
                </div>
             </li>
             <!-- USDT -->
-            <li class="donate-item">
+            <li class="donate-item donate-reveal">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/tether-usdt.png" alt=""></div>
-                  <div>
+                  <div class="donate-card-info">
                      <h4 class="donate-card-title">USDT</h4>
+                     <p class="donate-card-hint donate-hint-tap" data-i18n="donate.walletHint">Нажмите, чтобы показать
+                        номер кошелька</p>
                   </div>
                </div>
                <div class="donate-address-row">
-                  <div class="crypto-address">TW2fA21QdywMUsYL3SXXzvAXXaKeSmbGDn</div>
-                  <button type="button" class="copy-btn" data-i18n="donate.copy">Copy</button>
+                  <div class="crypto-address"
+                     data-card-number="VFcyZkEyMVFkeXdNVXNZTDNTWFh6dkFYWGFLZVNtYkdEbg=="></div>
+                  <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
                </div>
             </li>
          </ul>
@@ -923,6 +1033,20 @@
                   el.alt = value;
                }
             });
+
+            const openHint = getNested(dict, 'donate.qr.tapHide');
+            if (openHint !== undefined && openHint !== null) {
+               document.querySelectorAll('.qr-card.number-open .qr-hint-tap').forEach(el => {
+                  el.textContent = openHint;
+               });
+            }
+
+            const walletHideHint = getNested(dict, 'donate.walletHintHide');
+            if (walletHideHint !== undefined && walletHideHint !== null) {
+               document.querySelectorAll('.donate-reveal.number-open .donate-hint-tap').forEach(el => {
+                  el.textContent = walletHideHint;
+               });
+            }
 
             document.documentElement.lang = lang;
 
@@ -976,15 +1100,40 @@
          }
       }
 
+      function decodeEncodedValue(el) {
+         if (!el || el.textContent.trim()) return;
+
+         const encoded = el.dataset.cardNumber;
+         if (!encoded) return;
+
+         try {
+            el.textContent = atob(encoded);
+         } catch (err) {
+            console.error('Failed to decode value:', err);
+            el.textContent = translate('donate.qr.numberError') || '—';
+         }
+      }
+
       function setupCopyButtons() {
          document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', async () => {
+            btn.addEventListener('click', async (event) => {
+               event.stopPropagation();
+
                const row = btn.closest('.donate-address-row');
                if (!row) return;
                const address = row.querySelector('.crypto-address');
                if (!address) return;
 
-               const text = address.textContent.trim();
+               let text = address.textContent.trim();
+               if (!text && address.dataset.cardNumber) {
+                  try {
+                     text = atob(address.dataset.cardNumber);
+                  } catch (err) {
+                     console.error('Failed to decode card number:', err);
+                  }
+               }
+               if (!text) return;
+
                const copyText = translate('donate.copy') || 'Copy';
                const copiedText = translate('donate.copied') || 'Copied';
 
@@ -1020,6 +1169,33 @@
             const wasFlipped = card.classList.contains('flipped');
             cards.forEach(c => setFlipped(c, false));
             if (!wasFlipped) setFlipped(card, true);
+         }
+
+         function updateTapHint(card) {
+            const hint = card.querySelector('.qr-hint-tap');
+            if (!hint) return;
+            const key = card.classList.contains('number-open') ? 'donate.qr.tapHide' : 'donate.qr.tap';
+            const value = translate(key);
+            if (value) hint.textContent = value;
+         }
+
+         function revealNumber(card) {
+            decodeEncodedValue(card.querySelector('.qr-card-number'));
+         }
+
+         function toggleNumber(card) {
+            const wasOpen = card.classList.contains('number-open');
+            cards.forEach(c => {
+               c.classList.remove('number-open');
+               c.setAttribute('aria-pressed', 'false');
+               updateTapHint(c);
+            });
+            if (wasOpen) return;
+
+            revealNumber(card);
+            card.classList.add('number-open');
+            card.setAttribute('aria-pressed', 'true');
+            updateTapHint(card);
          }
 
          function openQrLink(card) {
@@ -1079,9 +1255,11 @@
                suppressClick = false;
             }
 
-            card.addEventListener('click', () => {
+            card.addEventListener('click', (event) => {
+               if (event.target.closest('.copy-btn')) return;
+
                if (isTouchMode()) {
-                  openQrLink(card);
+                  toggleNumber(card);
                   return;
                }
 
@@ -1094,10 +1272,11 @@
             });
 
             card.addEventListener('keydown', (event) => {
+               if (event.target.closest('.copy-btn')) return;
                if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
                   event.preventDefault();
                   if (isTouchMode()) {
-                     openQrLink(card);
+                     toggleNumber(card);
                   } else {
                      toggleCard(card);
                   }
@@ -1121,11 +1300,102 @@
          });
       }
 
+      function setupDonateCards() {
+         const cards = document.querySelectorAll('.donate-reveal, .donate-open');
+         if (!cards.length) return;
+
+         const revealCards = Array.from(cards).filter(card => card.classList.contains('donate-reveal'));
+         const touchModeQuery = window.matchMedia('(hover: none) and (pointer: coarse)');
+         const isTouchMode = () => touchModeQuery.matches;
+
+         revealCards.forEach(card => decodeEncodedValue(card.querySelector('.crypto-address')));
+
+         function updateWalletHint(card) {
+            const hint = card.querySelector('.donate-hint-tap');
+            if (!hint) return;
+            const key = card.classList.contains('number-open') ? 'donate.walletHintHide' : 'donate.walletHint';
+            const value = translate(key);
+            if (value) hint.textContent = value;
+         }
+
+         function toggleWallet(card) {
+            const wasOpen = card.classList.contains('number-open');
+            revealCards.forEach(c => {
+               c.classList.remove('number-open');
+               c.setAttribute('aria-pressed', 'false');
+               updateWalletHint(c);
+            });
+            if (wasOpen) return;
+
+            card.classList.add('number-open');
+            card.setAttribute('aria-pressed', 'true');
+            updateWalletHint(card);
+         }
+
+         function openCardLink(card) {
+            const link = card.querySelector('.donate-link');
+            const href = link && link.getAttribute('href');
+            if (!href) return;
+            window.open(href, '_blank', 'noopener');
+         }
+
+         function activateCard(card) {
+            if (card.classList.contains('donate-reveal')) {
+               toggleWallet(card);
+            } else {
+               openCardLink(card);
+            }
+         }
+
+         function syncInteractiveState() {
+            const touch = isTouchMode();
+            cards.forEach(card => {
+               if (touch) {
+                  card.setAttribute('role', 'button');
+                  card.setAttribute('tabindex', '0');
+                  if (card.classList.contains('donate-reveal')) {
+                     card.setAttribute('aria-pressed', card.classList.contains('number-open') ? 'true' : 'false');
+                  }
+                  return;
+               }
+
+               card.removeAttribute('role');
+               card.removeAttribute('tabindex');
+               card.removeAttribute('aria-pressed');
+               if (card.classList.contains('donate-reveal')) {
+                  card.classList.remove('number-open');
+                  updateWalletHint(card);
+               }
+            });
+         }
+
+         cards.forEach(card => {
+            card.addEventListener('click', (event) => {
+               if (!isTouchMode()) return;
+               if (event.target.closest('.copy-btn, .donate-link')) return;
+               activateCard(card);
+            });
+
+            card.addEventListener('keydown', (event) => {
+               if (!isTouchMode()) return;
+               if (event.target.closest('.copy-btn, .donate-link')) return;
+               if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+                  event.preventDefault();
+                  activateCard(card);
+               }
+            });
+         });
+
+         touchModeQuery.addEventListener('change', syncInteractiveState);
+         syncInteractiveState();
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
          const lang = (navigator.language || '').slice(0, 2) === 'en' ? 'en' : 'ru';
          loadLanguage(lang);
          setupCopyButtons();
          setupQrCards();
+         setupDonateCards();
       });
 
       // ===== Mobile Nav Toggle =====
