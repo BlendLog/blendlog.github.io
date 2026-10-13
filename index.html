@@ -49,21 +49,20 @@
 
       /* ===== Language Switcher ===== */
       .lang-switcher {
-         position: fixed;
-         top: 16px;
-         right: 16px;
-         z-index: 1001;
+         display: flex;
+         align-items: center;
          border-radius: 24px;
          padding: 6px;
          background: #111;
          border: 1px solid #222;
+         flex-shrink: 0;
       }
 
       .lang-btn {
          background: transparent;
          border: none;
          color: #888;
-         padding: 8px 15px;
+         padding: 7px 12px;
          border-radius: 20px;
          cursor: pointer;
          transition: all 0.3s ease;
@@ -94,15 +93,15 @@
       nav {
          display: flex;
          align-items: center;
-         justify-content: space-between;
+         flex-wrap: wrap;
+         gap: 12px;
          padding: 20px 40px;
-         max-width: 900px;
+         max-width: 1060px;
          margin: 0 auto;
          position: sticky;
          top: 0;
          z-index: 1000;
-         background: rgba(13, 13, 13, 0.96);
-         backdrop-filter: blur(10px);
+         background: rgba(13, 13, 13, 0.97);
          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
 
@@ -129,10 +128,34 @@
          font-weight: 700;
       }
 
+      .donate-tab {
+         display: inline-flex;
+         align-items: center;
+         padding: 6px 12px;
+         border-radius: 999px;
+         background: #221a10;
+         border: 1px solid #4a3a1c;
+         color: #f5a155;
+         font-size: 13px;
+         font-weight: 500;
+         text-decoration: none;
+         white-space: nowrap;
+         flex-shrink: 0;
+         transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .donate-tab:hover {
+         color: #ffb86c;
+         background: #2b2114;
+         border-color: #7a5a22;
+      }
+
       .nav-links {
          list-style: none;
          display: flex;
-         gap: 32px;
+         align-items: center;
+         gap: 14px;
+         margin-left: auto;
       }
 
       .nav-links a {
@@ -141,12 +164,7 @@
          font-size: 14px;
          transition: color 0.3s ease;
          position: relative;
-      }
-
-      .nav-links a.donate-tab {
-         display: inline-flex;
-         align-items: center;
-         color: #f5a155;
+         white-space: nowrap;
       }
 
       .nav-links a::after {
@@ -184,24 +202,50 @@
          scroll-margin-top: 100px;
       }
 
-      .nav-links a.donate-tab {
-         color: #f5a155;
-      }
-
-      .nav-links a.donate-tab:hover {
-         color: #ffb86c;
-      }
-
-      .nav-links a.donate-tab:hover::after {
-         background-color: #ffb86c;
-      }
-
       .nav-links .github-link {
          color: #ffffff;
       }
 
       .nav-links .github-link:hover {
          color: #ffffff;
+      }
+
+      /* ===== Mobile Nav Drawer ===== */
+      .nav-drawer-top,
+      .nav-drawer-lang {
+         display: none;
+      }
+
+      .nav-close {
+         background: transparent;
+         border: none;
+         color: #888;
+         font-size: 18px;
+         line-height: 1;
+         cursor: pointer;
+         padding: 8px 10px;
+         border-radius: 8px;
+         transition: color 0.2s ease, background 0.2s ease;
+      }
+
+      .nav-close:hover {
+         color: #ffffff;
+         background: rgba(255, 255, 255, 0.06);
+      }
+
+      .nav-backdrop {
+         position: fixed;
+         inset: 0;
+         background: rgba(0, 0, 0, 0.55);
+         opacity: 0;
+         visibility: hidden;
+         pointer-events: none;
+         transition: opacity 0.25s ease, visibility 0.25s ease;
+         z-index: 1;
+      }
+
+      body.nav-open {
+         overflow: hidden;
       }
 
       /* ===== GitHub Stars Badge ===== */
@@ -634,6 +678,13 @@
          gap: 5px;
          width: 36px;
          height: 36px;
+         border-radius: 8px;
+         flex-shrink: 0;
+         transition: background 0.2s ease;
+      }
+
+      .nav-toggle:hover {
+         background: rgba(255, 255, 255, 0.06);
       }
 
       .nav-toggle span {
@@ -646,50 +697,49 @@
          transform-origin: center;
       }
 
-      .nav-toggle.active span:nth-child(1) {
-         transform: translateY(7px) rotate(45deg);
-      }
-
-      .nav-toggle.active span:nth-child(2) {
-         opacity: 0;
-         transform: scaleX(0);
-      }
-
-      .nav-toggle.active span:nth-child(3) {
-         transform: translateY(-7px) rotate(-45deg);
-      }
-
       /* ===== Responsive ===== */
-      @media (max-width: 600px) {
-         .lang-switcher {
-            top: 10px;
-            right: 10px;
-         }
-
+      /* Узкие экраны: бургер слева, вкладка «Донат» рядом с логотипом, меню — выезжающая панель */
+      @media (max-width: 1024px) {
          nav {
-            padding: 16px 20px;
-            flex-direction: column;
-            gap: 12px;
-            align-items: flex-start;
+            padding: 14px 16px;
+            gap: 10px;
          }
 
          .nav-toggle {
             display: flex;
          }
 
+         .lang-switcher {
+            margin-left: auto;
+         }
+
          .nav-links {
-            list-style: none;
-            display: none;
-            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100dvh;
+            width: min(320px, 84vw);
             flex-direction: column;
+            align-items: stretch;
             gap: 0;
-            padding: 0;
+            padding: 10px 12px 24px;
             margin: 0;
-            border-top: 1px solid #1a1a1a;
+            background: #0f0f0f;
+            border-right: 1px solid #1a1a1a;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 2;
          }
 
          .nav-links.open {
+            transform: translateX(0);
+         }
+
+         .nav-drawer-top {
             display: flex;
+            justify-content: flex-end;
+            margin-bottom: 4px;
          }
 
          .nav-links li {
@@ -698,8 +748,8 @@
 
          .nav-links a {
             display: block;
-            padding: 12px 4px;
-            color: #888;
+            padding: 13px 10px;
+            color: #b9b9b9;
             font-size: 15px;
             border-bottom: 1px solid #1a1a1a;
          }
@@ -708,26 +758,65 @@
             display: none;
          }
 
-         .nav-links a.donate-tab::after {
-            display: block;
-         }
-
-         .nav-links a.donate-tab::before {
-            display: block;
-         }
-
          .nav-links a:hover {
-            color: #e0e0e0;
-            background: transparent;
+            color: #ffffff;
          }
 
-         .nav-links a.donate-tab:hover {
-            color: #ffb86c;
+         .nav-links a.active {
+            color: #7db5ff;
+         }
+
+         .nav-links .github-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+         }
+
+         .nav-links .github-link:hover {
+            color: #ffffff;
          }
 
          .github-stars {
             margin-left: 0;
             font-size: 13px;
+         }
+
+         .nav-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+         }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .nav-links {
+            transition: none;
+         }
+      }
+
+      @media (max-width: 600px) {
+         nav {
+            padding: 12px 14px;
+         }
+
+         nav > .lang-switcher {
+            display: none;
+         }
+
+         .donate-tab {
+            padding: 5px 10px;
+            font-size: 12px;
+         }
+
+         .nav-drawer-lang {
+            display: block;
+            margin-top: 8px;
+            padding: 16px 10px 0;
+            border-top: 1px solid #1a1a1a;
+         }
+
+         .nav-drawer-lang .lang-switcher {
+            margin-left: 0;
          }
 
          .hero {
@@ -746,35 +835,45 @@
 </head>
 
 <body>
-   <!-- Language Switcher -->
-   <div class="lang-switcher">
-      <button type="button" class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
-      <button type="button" class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
-   </div>
    <!-- Nav -->
    <nav>
-      <div class="logo">
-         <div class="logo-icon">M</div>
-         MinerSearch
-      </div>
-      <button type="button" class="nav-toggle" aria-label="Toggle navigation">
+      <button type="button" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"
+         aria-controls="nav-drawer">
          <span></span>
          <span></span>
          <span></span>
       </button>
-      <ul class="nav-links">
+      <div class="logo">
+         <div class="logo-icon">M</div>
+         MinerSearch
+      </div>
+      <a class="donate-tab" href="donate.html" data-i18n="nav.donate">💰 Donate</a>
+      <ul class="nav-links" id="nav-drawer">
+         <li class="nav-drawer-top">
+            <button type="button" class="nav-close" aria-label="Close menu">&#10005;</button>
+         </li>
          <li><a href="#home" data-i18n="nav.home">Home</a></li>
          <li><a href="#about" data-i18n="nav.about">About</a></li>
          <li><a href="#usage" data-i18n="nav.usage">Usage</a></li>
          <li><a href="#contact" data-i18n="contact.nav">Contact</a></li>
-         <li><a class="donate-tab" href="donate.html" data-i18n="nav.donate">💰 Donate</a></li>
          <li>
             <a class="github-link" href="https://github.com/BlendLog/MinerSearch" target="_blank" rel="noopener">
                <i class="fab fa-github"></i> GitHub
                <span class="github-stars" id="nav-star-count"><span class="stars-placeholder">&#9734; ---</span></span>
             </a>
          </li>
+         <li class="nav-drawer-lang">
+            <div class="lang-switcher">
+               <button type="button" class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
+               <button type="button" class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
+            </div>
+         </li>
       </ul>
+      <div class="lang-switcher">
+         <button type="button" class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
+         <button type="button" class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
+      </div>
+      <div class="nav-backdrop"></div>
    </nav>
    <!-- Hero -->
    <section class="hero" id="home">
@@ -1290,24 +1389,55 @@
          }
       }
 
-      // ===== Mobile Nav Toggle =====
+      // ===== Mobile Nav Drawer =====
       (function () {
          const toggle = document.querySelector('.nav-toggle');
-         const navLinks = document.querySelector('.nav-links');
-         if (!toggle || !navLinks) return;
+         const drawer = document.querySelector('.nav-links');
+         const backdrop = document.querySelector('.nav-backdrop');
+         const closeBtn = document.querySelector('.nav-close');
+         if (!toggle || !drawer || !backdrop) return;
+
+         function setOpen(open) {
+            drawer.classList.toggle('open', open);
+            backdrop.classList.toggle('open', open);
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            document.body.classList.toggle('nav-open', open);
+         }
 
          toggle.addEventListener('click', function () {
-            navLinks.classList.toggle('open');
-            toggle.classList.toggle('active');
+            setOpen(!drawer.classList.contains('open'));
          });
 
-         // Close menu when a nav link is clicked
-         navLinks.querySelectorAll('a').forEach(function (link) {
+         backdrop.addEventListener('click', function () {
+            setOpen(false);
+         });
+
+         if (closeBtn) {
+            closeBtn.addEventListener('click', function () {
+               setOpen(false);
+            });
+         }
+
+         // Close the drawer when a nav link is clicked
+         drawer.querySelectorAll('a').forEach(function (link) {
             link.addEventListener('click', function () {
-               navLinks.classList.remove('open');
-               toggle.classList.remove('active');
+               setOpen(false);
             });
          });
+
+         document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && drawer.classList.contains('open')) {
+               setOpen(false);
+            }
+         });
+
+         // Если окно расширили до десктопа — закрыть панель и снять блокировку скролла
+         const wideQuery = window.matchMedia('(min-width: 1025px)');
+         if (wideQuery.addEventListener) {
+            wideQuery.addEventListener('change', function (event) {
+               if (event.matches) setOpen(false);
+            });
+         }
       })();
    </script>
 </body>

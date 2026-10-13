@@ -19,8 +19,7 @@
       }
 
       :root {
-         --qr-card-size: 200px;
-         --qr-gap: 16px;
+         --card-gap: 16px;
       }
 
       body {
@@ -33,21 +32,21 @@
 
       /* ===== Language Switcher ===== */
       .lang-switcher {
-         position: fixed;
-         top: 16px;
-         right: 16px;
-         z-index: 1001;
+         display: flex;
+         align-items: center;
+         margin-left: auto;
          border-radius: 24px;
          padding: 6px;
          background: #111;
          border: 1px solid #222;
+         flex-shrink: 0;
       }
 
       .lang-btn {
          background: transparent;
          border: none;
          color: #888;
-         padding: 8px 15px;
+         padding: 7px 12px;
          border-radius: 20px;
          cursor: pointer;
          transition: all 0.3s ease;
@@ -82,6 +81,23 @@
          font-weight: 600;
          font-size: 15px;
          letter-spacing: 0.5px;
+         text-decoration: none;
+         transition: color 0.3s ease;
+      }
+
+      .logo:hover {
+         color: #7db5ff;
+      }
+
+      .logo:hover .logo-icon {
+         border-color: #7db5ff;
+         color: #7db5ff;
+      }
+
+      .logo:focus-visible {
+         outline: 2px solid #3a6bca;
+         outline-offset: 4px;
+         border-radius: 6px;
       }
 
       .logo-icon {
@@ -95,79 +111,6 @@
          font-size: 11px;
          color: #3a6bca;
          font-weight: 700;
-      }
-
-      .nav-links {
-         list-style: none;
-         display: flex;
-         gap: 32px;
-      }
-
-      .nav-links a {
-         color: #888;
-         text-decoration: none;
-         font-size: 14px;
-         transition: color 0.3s ease;
-         position: relative;
-      }
-
-      .nav-links a::after {
-         content: '';
-         position: absolute;
-         left: 0;
-         right: 0;
-         bottom: -4px;
-         height: 2px;
-         background-color: #3a6bca;
-         border-radius: 1px;
-         transform: scaleX(0);
-         transition: transform 0.3s ease;
-      }
-
-      .nav-links a:hover {
-         color: #e0e0e0;
-      }
-
-      .nav-links a:hover::after {
-         transform: scaleX(1);
-      }
-
-      /* ===== Burger Toggle Button ===== */
-      .nav-toggle {
-         display: none;
-         background: transparent;
-         border: none;
-         cursor: pointer;
-         padding: 8px;
-         flex-direction: column;
-         justify-content: center;
-         align-items: center;
-         gap: 5px;
-         width: 36px;
-         height: 36px;
-      }
-
-      .nav-toggle span {
-         display: block;
-         width: 22px;
-         height: 2px;
-         background-color: #888;
-         border-radius: 1px;
-         transition: all 0.3s ease;
-         transform-origin: center;
-      }
-
-      .nav-toggle.active span:nth-child(1) {
-         transform: translateY(7px) rotate(45deg);
-      }
-
-      .nav-toggle.active span:nth-child(2) {
-         opacity: 0;
-         transform: scaleX(0);
-      }
-
-      .nav-toggle.active span:nth-child(3) {
-         transform: translateY(-7px) rotate(-45deg);
       }
 
       /* ===== Hero ===== */
@@ -213,9 +156,9 @@
          display: grid;
          grid-template-columns: 1fr;
          list-style-type: none;
-         gap: var(--qr-gap);
+         gap: var(--card-gap);
          margin-top: 20px;
-         max-width: calc(3 * var(--qr-card-size) + 2 * var(--qr-gap));
+         max-width: 632px;
          margin-left: auto;
          margin-right: auto;
       }
@@ -378,138 +321,6 @@
          margin-top: 6px;
       }
 
-      /* ===== QR Donation Cards ===== */
-      .qr-section {
-         margin-bottom: 16px;
-      }
-
-      .qr-grid {
-         display: grid;
-         grid-template-columns: repeat(3, var(--qr-card-size));
-         justify-content: center;
-         gap: var(--qr-gap);
-         margin-top: 20px;
-         list-style: none;
-      }
-
-      .qr-card {
-         perspective: 1000px;
-         cursor: pointer;
-         background: transparent;
-         border: none;
-         padding: 0;
-         -webkit-tap-highlight-color: transparent;
-         touch-action: manipulation;
-         -webkit-user-select: none;
-         user-select: none;
-         -webkit-touch-callout: none;
-      }
-
-      .qr-card:focus-visible {
-         outline: 2px solid #3a6bca;
-         outline-offset: 3px;
-         border-radius: 12px;
-      }
-
-      .qr-card-inner {
-         position: relative;
-         width: 100%;
-         aspect-ratio: 1 / 1;
-         transform-style: preserve-3d;
-         -webkit-transform-style: preserve-3d;
-         transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .qr-card.flipped .qr-card-inner {
-         transform: rotateY(180deg);
-      }
-
-      .qr-card-face {
-         position: absolute;
-         inset: 0;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
-         text-align: center;
-         padding: 16px;
-         border-radius: 12px;
-         border: 1px solid #1a1a1a;
-         backface-visibility: hidden;
-         -webkit-backface-visibility: hidden;
-         overflow: hidden;
-      }
-
-      .qr-card-front {
-         background-color: #111;
-         transition: border-color 0.2s ease;
-      }
-
-      @media (hover: hover) {
-         .qr-card:hover .qr-card-front {
-            border-color: #3a6bca;
-         }
-      }
-
-      .qr-card-back {
-         background-color: #fff;
-         transform: rotateY(180deg);
-      }
-
-      .qr-logo {
-         width: 72px;
-         height: 72px;
-         object-fit: contain;
-         padding: 12px;
-         border-radius: 16px;
-         background-color: #1a1f2e;
-      }
-
-      .qr-card-name {
-         color: #c0c0c0;
-         font-size: 15px;
-         font-weight: 600;
-         margin-top: 12px;
-      }
-
-      .qr-card-hint {
-         color: #555;
-         font-size: 12px;
-         margin-top: 6px;
-         line-height: 1.4;
-      }
-
-      .qr-hint-tap {
-         display: none;
-      }
-
-      .qr-img {
-         width: 72%;
-         aspect-ratio: 1 / 1;
-         display: block;
-         object-fit: contain;
-         background-color: #fff;
-         border-radius: 4px;
-         -webkit-user-drag: none;
-      }
-
-      .qr-card-note {
-         color: #666;
-         font-size: 12px;
-         margin-top: 10px;
-         line-height: 1.4;
-      }
-
-      .qr-card .qr-card-number-row {
-         display: none;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-         .qr-card-inner {
-            transition: none;
-         }
-      }
-
       /* ===== Footer ===== */
       footer {
          text-align: center;
@@ -547,56 +358,8 @@
 
       /* ===== Responsive ===== */
       @media (max-width: 600px) {
-         .lang-switcher {
-            top: 10px;
-            right: 10px;
-         }
-
          nav {
-            padding: 16px 20px;
-            flex-direction: column;
-            gap: 12px;
-            align-items: flex-start;
-         }
-
-         .nav-toggle {
-            display: flex;
-         }
-
-         .nav-links {
-            list-style: none;
-            display: none;
-            width: 100%;
-            flex-direction: column;
-            gap: 0;
-            padding: 0;
-            margin: 0;
-            border-top: 1px solid #1a1a1a;
-         }
-
-         .nav-links.open {
-            display: flex;
-         }
-
-         .nav-links li {
-            width: 100%;
-         }
-
-         .nav-links a {
-            display: block;
-            padding: 12px 4px;
-            color: #888;
-            font-size: 15px;
-            border-bottom: 1px solid #1a1a1a;
-         }
-
-         .nav-links a::after {
-            display: none;
-         }
-
-         .nav-links a:hover {
-            color: #e0e0e0;
-            background: transparent;
+            padding: 14px 16px;
          }
 
          .hero {
@@ -664,99 +427,17 @@
             align-items: stretch;
          }
 
-         .qr-grid {
-            grid-template-columns: var(--qr-card-size);
-            justify-content: center;
-         }
-
-         .qr-logo {
-            width: 60px;
-            height: 60px;
-            padding: 10px;
-         }
-
          footer {
             padding: 30px 20px;
          }
       }
 
-      /* ===== Mobile QR Rows (touch devices) ===== */
+      /* ===== Donation rows (touch devices) ===== */
       @media (hover: none) and (pointer: coarse) {
-         .qr-grid {
-            grid-template-columns: 1fr;
-            justify-content: stretch;
+         .donate-grid {
+            max-width: none;
          }
 
-         .qr-card {
-            perspective: none;
-         }
-
-         .qr-card-inner,
-         .qr-card.flipped .qr-card-inner {
-            aspect-ratio: auto;
-            transform: none;
-            transition: none;
-         }
-
-         .qr-card-face {
-            position: static;
-         }
-
-         .qr-card-back {
-            display: none;
-         }
-
-         .qr-card-front {
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 16px;
-            text-align: left;
-         }
-
-         .qr-card-info {
-            flex: 1 1 auto;
-            min-width: 0;
-         }
-
-         .qr-card-number-row {
-            flex-basis: 100%;
-            margin-top: 0;
-         }
-
-         .qr-card.number-open .qr-card-number-row {
-            display: flex;
-         }
-
-         .qr-logo {
-            width: 40px;
-            height: 40px;
-            padding: 6px;
-            border-radius: 8px;
-            flex-shrink: 0;
-         }
-
-         .qr-card-name {
-            margin-top: 0;
-         }
-
-         .qr-card-hint {
-            color: #888;
-            font-size: 14px;
-            line-height: 1.7;
-            margin-top: 4px;
-         }
-
-         .qr-hint-flip {
-            display: none;
-         }
-
-         .qr-hint-tap {
-            display: block;
-         }
-
-         /* Donate cards share the QR row style on touch devices */
          .donate-item {
             display: flex;
             flex-direction: column;
@@ -815,25 +496,16 @@
 </head>
 
 <body>
-   <!-- Language Switcher -->
-   <div class="lang-switcher">
-      <button type="button" class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
-      <button type="button" class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
-   </div>
    <!-- Nav -->
    <nav>
-      <div class="logo">
+      <a class="logo" href="index.html">
          <div class="logo-icon">M</div>
          MinerSearch
+      </a>
+      <div class="lang-switcher">
+         <button type="button" class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
+         <button type="button" class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
       </div>
-      <button type="button" class="nav-toggle" aria-label="Toggle navigation">
-         <span></span>
-         <span></span>
-         <span></span>
-      </button>
-      <ul class="nav-links">
-         <li><a href="index.html" data-i18n="nav.home">Home</a></li>
-      </ul>
    </nav>
    <!-- Hero -->
    <section class="hero">
@@ -844,85 +516,56 @@
    </section>
    <!-- Content -->
    <div class="content">
-      <!-- QR Transfer Cards -->
-      <section class="section qr-section">
-         <ul class="qr-grid">
+      <section class="section">
+         <ul class="donate-grid">
             <!-- Sber -->
-            <li class="qr-card" role="button" tabindex="0" aria-pressed="false">
-               <div class="qr-card-inner">
-                  <div class="qr-card-face qr-card-front">
-                     <img class="qr-logo" src="icons/sber.png" alt="" aria-hidden="true">
-                     <div class="qr-card-info">
-                        <div class="qr-card-name" data-i18n="donate.qr.sber">Сбербанк</div>
-                        <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
-                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты</div>
-                     </div>
-                     <div class="donate-address-row qr-card-number-row">
-                        <div class="crypto-address qr-card-number"
-                           data-card-number="MjIwMiAyMDgwIDQyNDIgMTUxMg=="></div>
-                        <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
-                     </div>
+            <li class="donate-item donate-reveal">
+               <div class="donate-card-header">
+                  <div class="donate-icon"><img src="icons/sber.png" alt=""></div>
+                  <div class="donate-card-info">
+                     <h4 class="donate-card-title" data-i18n="donate.qr.sber">Сбербанк</h4>
+                     <p class="donate-card-hint donate-hint-tap" data-hint="donate.qr.tap"
+                        data-hint-hide="donate.qr.tapHide" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты
+                     </p>
                   </div>
-                  <div class="qr-card-face qr-card-back">
-                     <img class="qr-img" src="images/qr/sber.png" data-i18n-alt="donate.qr.alt.sber"
-                        data-qr="aHR0cHM6Ly93d3cuc2JlcmJhbmsuY29tL3Ntcy9wYnBuP3JlcXVpc2l0ZU51bWJlcj05MDA5Mjc3OTgy"
-                        loading="lazy" decoding="async" alt="QR-код Сбербанк">
-                     <div class="qr-card-note" data-i18n="donate.qr.hold">Удерживайте, чтобы открыть ссылку</div>
-                  </div>
+               </div>
+               <div class="donate-address-row">
+                  <div class="crypto-address" data-card-number="MjIwMiAyMDgwIDQyNDIgMTUxMg=="></div>
+                  <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
                </div>
             </li>
             <!-- Alfa-Bank -->
-            <li class="qr-card" role="button" tabindex="0" aria-pressed="false">
-               <div class="qr-card-inner">
-                  <div class="qr-card-face qr-card-front">
-                     <img class="qr-logo" src="icons/alfa.png" alt="" aria-hidden="true">
-                     <div class="qr-card-info">
-                        <div class="qr-card-name" data-i18n="donate.qr.alfa">Альфа-Банк</div>
-                        <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
-                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты</div>
-                     </div>
-                     <div class="donate-address-row qr-card-number-row">
-                        <div class="crypto-address qr-card-number"
-                           data-card-number="MjIwMCAxNTQ1IDIyOTMgNjIzNQ=="></div>
-                        <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
-                     </div>
+            <li class="donate-item donate-reveal">
+               <div class="donate-card-header">
+                  <div class="donate-icon"><img src="icons/alfa.png" alt=""></div>
+                  <div class="donate-card-info">
+                     <h4 class="donate-card-title" data-i18n="donate.qr.alfa">Альфа-Банк</h4>
+                     <p class="donate-card-hint donate-hint-tap" data-hint="donate.qr.tap"
+                        data-hint-hide="donate.qr.tapHide" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты
+                     </p>
                   </div>
-                  <div class="qr-card-face qr-card-back">
-                     <img class="qr-img" src="images/qr/alfa.png" data-i18n-alt="donate.qr.alt.alfa"
-                        data-qr="aHR0cHM6Ly9jMmMuY2JycGF5LnJ1L0FTMUkwMDBBVjAxNDFEQUw4SDFBOE4yMzhRT1ZEUjBO"
-                        loading="lazy" decoding="async" alt="QR-код Альфа-Банк">
-                     <div class="qr-card-note" data-i18n="donate.qr.hold">Удерживайте, чтобы открыть ссылку</div>
-                  </div>
+               </div>
+               <div class="donate-address-row">
+                  <div class="crypto-address" data-card-number="MjIwMCAxNTQ1IDIyOTMgNjIzNQ=="></div>
+                  <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
                </div>
             </li>
             <!-- YooMoney -->
-            <li class="qr-card" role="button" tabindex="0" aria-pressed="false">
-               <div class="qr-card-inner">
-                  <div class="qr-card-face qr-card-front">
-                     <img class="qr-logo" src="icons/yoomoney.png" alt="" aria-hidden="true">
-                     <div class="qr-card-info">
-                        <div class="qr-card-name" data-i18n="donate.qr.yoomoney">ЮMoney</div>
-                        <div class="qr-card-hint qr-hint-flip" data-i18n="donate.qr.hint">Нажмите, чтобы показать QR-код</div>
-                        <div class="qr-card-hint qr-hint-tap" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты</div>
-                     </div>
-                     <div class="donate-address-row qr-card-number-row">
-                        <div class="crypto-address qr-card-number"
-                           data-card-number="NDEwMDExNjExMjY0MDk2OA=="></div>
-                        <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
-                     </div>
-                  </div>
-                  <div class="qr-card-face qr-card-back">
-                     <img class="qr-img" src="images/qr/yoomoney.png" data-i18n-alt="donate.qr.alt.yoomoney"
-                        data-qr="aHR0cHM6Ly95b29tb25leS5ydS90by80MTAwMTE2MTEyNjQwOTY4"
-                        loading="lazy" decoding="async" alt="QR-код ЮMoney">
-                     <div class="qr-card-note" data-i18n="donate.qr.hold">Удерживайте, чтобы открыть ссылку</div>
+            <li class="donate-item donate-reveal">
+               <div class="donate-card-header">
+                  <div class="donate-icon"><img src="icons/yoomoney.png" alt=""></div>
+                  <div class="donate-card-info">
+                     <h4 class="donate-card-title" data-i18n="donate.qr.yoomoney">ЮMoney</h4>
+                     <p class="donate-card-hint donate-hint-tap" data-hint="donate.qr.tap"
+                        data-hint-hide="donate.qr.tapHide" data-i18n="donate.qr.tap">Нажмите, чтобы показать номер карты
+                     </p>
                   </div>
                </div>
+               <div class="donate-address-row">
+                  <div class="crypto-address" data-card-number="NDEwMDExNjExMjY0MDk2OA=="></div>
+                  <button type="button" class="copy-btn" data-i18n="donate.copy">Копировать</button>
+               </div>
             </li>
-         </ul>
-      </section>
-      <section class="section">
-         <ul class="donate-grid">
             <!-- Cloudtips -->
             <li class="donate-item donate-open">
                <div class="donate-card-header">
@@ -1034,19 +677,13 @@
                }
             });
 
-            const openHint = getNested(dict, 'donate.qr.tapHide');
-            if (openHint !== undefined && openHint !== null) {
-               document.querySelectorAll('.qr-card.number-open .qr-hint-tap').forEach(el => {
-                  el.textContent = openHint;
-               });
-            }
-
-            const walletHideHint = getNested(dict, 'donate.walletHintHide');
-            if (walletHideHint !== undefined && walletHideHint !== null) {
-               document.querySelectorAll('.donate-reveal.number-open .donate-hint-tap').forEach(el => {
-                  el.textContent = walletHideHint;
-               });
-            }
+            document.querySelectorAll('.donate-reveal.number-open .donate-hint-tap').forEach(el => {
+               const key = el.dataset.hintHide || 'donate.walletHintHide';
+               const value = getNested(dict, key);
+               if (value !== undefined && value !== null) {
+                  el.textContent = value;
+               }
+            });
 
             document.documentElement.lang = lang;
 
@@ -1152,154 +789,6 @@
          });
       }
 
-      function setupQrCards() {
-         const cards = document.querySelectorAll('.qr-card');
-         if (!cards.length) return;
-
-         const LONG_PRESS_DELAY = 500;
-         const touchModeQuery = window.matchMedia('(hover: none) and (pointer: coarse)');
-         const isTouchMode = () => touchModeQuery.matches;
-
-         function setFlipped(card, flipped) {
-            card.classList.toggle('flipped', flipped);
-            card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
-         }
-
-         function toggleCard(card) {
-            const wasFlipped = card.classList.contains('flipped');
-            cards.forEach(c => setFlipped(c, false));
-            if (!wasFlipped) setFlipped(card, true);
-         }
-
-         function updateTapHint(card) {
-            const hint = card.querySelector('.qr-hint-tap');
-            if (!hint) return;
-            const key = card.classList.contains('number-open') ? 'donate.qr.tapHide' : 'donate.qr.tap';
-            const value = translate(key);
-            if (value) hint.textContent = value;
-         }
-
-         function revealNumber(card) {
-            decodeEncodedValue(card.querySelector('.qr-card-number'));
-         }
-
-         function toggleNumber(card) {
-            const wasOpen = card.classList.contains('number-open');
-            cards.forEach(c => {
-               c.classList.remove('number-open');
-               c.setAttribute('aria-pressed', 'false');
-               updateTapHint(c);
-            });
-            if (wasOpen) return;
-
-            revealNumber(card);
-            card.classList.add('number-open');
-            card.setAttribute('aria-pressed', 'true');
-            updateTapHint(card);
-         }
-
-         function openQrLink(card) {
-            const img = card.querySelector('.qr-img');
-            const encoded = img && img.dataset.qr;
-            if (!encoded) return;
-
-            try {
-               window.open(atob(encoded), '_blank', 'noopener');
-            } catch (err) {
-               console.error('Failed to open QR link:', err);
-            }
-         }
-
-         cards.forEach(card => {
-            let pressTimer = null;
-            let longPressTriggered = false;
-            let suppressClick = false;
-
-            function cancelPress() {
-               if (pressTimer !== null) {
-                  clearTimeout(pressTimer);
-                  pressTimer = null;
-               }
-            }
-
-            function startPress(openOnTrigger) {
-               cancelPress();
-               if (isTouchMode()) return;
-               if (!card.classList.contains('flipped')) return;
-
-               pressTimer = setTimeout(() => {
-                  pressTimer = null;
-                  suppressClick = true;
-                  if (openOnTrigger) {
-                     openQrLink(card);
-                     setTimeout(() => { suppressClick = false; }, 1000);
-                  } else {
-                     longPressTriggered = true;
-                  }
-               }, LONG_PRESS_DELAY);
-            }
-
-            function endPress() {
-               cancelPress();
-               if (!longPressTriggered) return;
-
-               longPressTriggered = false;
-               suppressClick = true;
-               openQrLink(card);
-               setTimeout(() => { suppressClick = false; }, 1000);
-            }
-
-            function abortPress() {
-               cancelPress();
-               longPressTriggered = false;
-               suppressClick = false;
-            }
-
-            card.addEventListener('click', (event) => {
-               if (event.target.closest('.copy-btn')) return;
-
-               if (isTouchMode()) {
-                  toggleNumber(card);
-                  return;
-               }
-
-               if (suppressClick) {
-                  suppressClick = false;
-                  return;
-               }
-
-               toggleCard(card);
-            });
-
-            card.addEventListener('keydown', (event) => {
-               if (event.target.closest('.copy-btn')) return;
-               if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
-                  event.preventDefault();
-                  if (isTouchMode()) {
-                     toggleNumber(card);
-                  } else {
-                     toggleCard(card);
-                  }
-               }
-            });
-
-            card.addEventListener('touchstart', () => startPress(false), { passive: true });
-            card.addEventListener('touchend', endPress);
-            card.addEventListener('touchcancel', abortPress);
-            card.addEventListener('touchmove', abortPress, { passive: true });
-
-            card.addEventListener('mousedown', (event) => {
-               if (event.button !== 0) return;
-               startPress(true);
-            });
-            card.addEventListener('mouseup', endPress);
-            card.addEventListener('mouseleave', abortPress);
-
-            card.addEventListener('dragstart', (event) => event.preventDefault());
-            card.addEventListener('contextmenu', (event) => event.preventDefault());
-         });
-      }
-
       function setupDonateCards() {
          const cards = document.querySelectorAll('.donate-reveal, .donate-open');
          if (!cards.length) return;
@@ -1313,7 +802,9 @@
          function updateWalletHint(card) {
             const hint = card.querySelector('.donate-hint-tap');
             if (!hint) return;
-            const key = card.classList.contains('number-open') ? 'donate.walletHintHide' : 'donate.walletHint';
+            const key = card.classList.contains('number-open')
+               ? (hint.dataset.hintHide || 'donate.walletHintHide')
+               : (hint.dataset.hint || 'donate.walletHint');
             const value = translate(key);
             if (value) hint.textContent = value;
          }
@@ -1394,28 +885,8 @@
          const lang = (navigator.language || '').slice(0, 2) === 'en' ? 'en' : 'ru';
          loadLanguage(lang);
          setupCopyButtons();
-         setupQrCards();
          setupDonateCards();
       });
-
-      // ===== Mobile Nav Toggle =====
-      (function () {
-         const toggle = document.querySelector('.nav-toggle');
-         const navLinks = document.querySelector('.nav-links');
-         if (!toggle || !navLinks) return;
-
-         toggle.addEventListener('click', function () {
-            navLinks.classList.toggle('open');
-            toggle.classList.toggle('active');
-         });
-
-         navLinks.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', function () {
-               navLinks.classList.remove('open');
-               toggle.classList.remove('active');
-            });
-         });
-      })();
    </script>
 </body>
 

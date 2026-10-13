@@ -91,20 +91,12 @@
       "title": "USDT (TRC-20)"
     },
     "qr": {
-      "title": "QR code transfer",
       "sber": "Sber",
       "alfa": "Alfa-Bank",
       "yoomoney": "YooMoney",
-      "hint": "Click to show the QR code",
       "tap": "Tap to show the card number",
       "tapHide": "Tap to hide the card number",
-      "hold": "Press and hold to open the link",
-      "numberError": "Number unavailable",
-      "alt": {
-        "sber": "Sber QR code",
-        "alfa": "Alfa-Bank QR code",
-        "yoomoney": "YooMoney QR code"
-      }
+      "numberError": "Number unavailable"
     },
     "walletHint": "Tap to show the wallet number",
     "walletHintHide": "Tap to hide the number",
