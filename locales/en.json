@@ -16,6 +16,8 @@
     "title": "МinerSearch - Miner Detection and Removal",
     "subtitle": "Free utility for detecting and removing hidden cryptocurrency miners on Windows systems.",
     "downloadBtn": "Download MinerSearch",
+    "mirrorHint": "Can't open the archive?",
+    "mirrorLink": "Download with a random filename!",
     "usageBtn": "How to Use",
     "telegramChannel": "Telegram Channel",
     "window-tag": "For Windows 8.1, 10, 11 · .NET Framework 4.8 required"

