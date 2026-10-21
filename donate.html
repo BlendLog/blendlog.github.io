@@ -185,6 +185,15 @@
          max-width: 720px;
       }
 
+      .donate-intl-note {
+         max-width: 632px;
+         margin: 0 auto 20px;
+      }
+
+      html[lang="ru"] .donate-intl-note {
+         display: none;
+      }
+
       .donate-card-header {
          display: flex;
          align-items: center;
@@ -517,9 +526,13 @@
    <!-- Content -->
    <div class="content">
       <section class="section">
+         <p class="donate-note donate-intl-note" data-i18n="donate.intlNote">
+            If you are outside Russia, start with TON, USDT (TRC-20) or Boosty. Sber, Alfa-Bank, YooMoney and Cloudtips
+            accept Russian cards only.
+         </p>
          <ul class="donate-grid">
             <!-- Sber -->
-            <li class="donate-item donate-reveal">
+            <li class="donate-item donate-reveal" data-donate-id="sber">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/sber.png" alt=""></div>
                   <div class="donate-card-info">
@@ -535,7 +548,7 @@
                </div>
             </li>
             <!-- Alfa-Bank -->
-            <li class="donate-item donate-reveal">
+            <li class="donate-item donate-reveal" data-donate-id="alfa">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/alfa.png" alt=""></div>
                   <div class="donate-card-info">
@@ -551,7 +564,7 @@
                </div>
             </li>
             <!-- YooMoney -->
-            <li class="donate-item donate-reveal">
+            <li class="donate-item donate-reveal" data-donate-id="yoomoney">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/yoomoney.png" alt=""></div>
                   <div class="donate-card-info">
@@ -567,7 +580,7 @@
                </div>
             </li>
             <!-- Cloudtips -->
-            <li class="donate-item donate-open">
+            <li class="donate-item donate-open" data-donate-id="cloudtips">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/cloudtips.png" alt="">
                   </div>
@@ -582,7 +595,7 @@
                   rel="noopener">pay.cloudtips.ru/p/243342f4</a>
             </li>
             <!-- Boosty -->
-            <li class="donate-item donate-open">
+            <li class="donate-item donate-open" data-donate-id="boosty">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/boosty.png" alt=""></div>
                   <div class="donate-card-info">
@@ -596,11 +609,11 @@
                   rel="noopener">boosty.to/blendlog/donate</a>
             </li>
             <!-- Ton -->
-            <li class="donate-item donate-reveal">
+            <li class="donate-item donate-reveal" data-donate-id="ton">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/toncoin.png" alt=""></div>
                   <div class="donate-card-info">
-                     <h4 class="donate-card-title">Ton</h4>
+                     <h4 class="donate-card-title" data-i18n="donate.ton.title">TON</h4>
                      <p class="donate-card-hint donate-hint-tap" data-i18n="donate.walletHint">Нажмите, чтобы показать
                         номер кошелька</p>
                   </div>
@@ -612,11 +625,11 @@
                </div>
             </li>
             <!-- USDT -->
-            <li class="donate-item donate-reveal">
+            <li class="donate-item donate-reveal" data-donate-id="usdt">
                <div class="donate-card-header">
                   <div class="donate-icon"><img src="icons/tether-usdt.png" alt=""></div>
                   <div class="donate-card-info">
-                     <h4 class="donate-card-title">USDT</h4>
+                     <h4 class="donate-card-title" data-i18n="donate.usdt.title">USDT (TRC-20)</h4>
                      <p class="donate-card-hint donate-hint-tap" data-i18n="donate.walletHint">Нажмите, чтобы показать
                         номер кошелька</p>
                   </div>
@@ -646,6 +659,30 @@
    <script>
       let currentLang = 'ru';
       let currentDict = {};
+
+      const donateOrder = {
+         ru: ['sber', 'alfa', 'yoomoney', 'cloudtips', 'boosty', 'ton', 'usdt'],
+         en: ['ton', 'usdt', 'boosty', 'sber', 'alfa', 'yoomoney', 'cloudtips'],
+      };
+
+      function detectLang() {
+         return (navigator.language || '').slice(0, 2).toLowerCase() === 'ru' ? 'ru' : 'en';
+      }
+
+      function applyDonateOrder(lang) {
+         const grid = document.querySelector('.donate-grid');
+         if (!grid) return;
+
+         const order = donateOrder[lang] || donateOrder.en;
+         const items = new Map(
+            Array.from(grid.children).map(el => [el.dataset.donateId, el])
+         );
+
+         order.forEach(id => {
+            const el = items.get(id);
+            if (el) grid.appendChild(el);
+         });
+      }
 
       async function loadLanguage(lang) {
          try {
@@ -686,6 +723,7 @@
             });
 
             document.documentElement.lang = lang;
+            applyDonateOrder(lang);
 
             document.querySelectorAll('.lang-btn').forEach(btn => {
                if (btn.tagName === 'BUTTON') {
@@ -699,6 +737,7 @@
       }
 
       function switchLang(lang) {
+         applyDonateOrder(lang);
          if (lang !== currentLang) loadLanguage(lang);
       }
 
@@ -881,8 +920,11 @@
          syncInteractiveState();
       }
 
+      applyDonateOrder(detectLang());
+
       document.addEventListener('DOMContentLoaded', () => {
-         const lang = (navigator.language || '').slice(0, 2) === 'en' ? 'en' : 'ru';
+         const lang = detectLang();
+         applyDonateOrder(lang);
          loadLanguage(lang);
          setupCopyButtons();
          setupDonateCards();

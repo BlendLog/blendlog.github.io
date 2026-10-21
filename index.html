@@ -292,7 +292,7 @@
 
       .mirror-hint {
          margin-top: 8px;
-         font-size: 12px;
+         font-size: 14px;
          line-height: 1.6;
          color: #666;
       }
@@ -321,7 +321,7 @@
       }
 
       .hero-subtitle {
-         color: #777;
+         color: #f7f7f7;
          font-size: 16px;
          max-width: 520px;
          margin-bottom: 40px;
@@ -1205,7 +1205,7 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
-         const lang = (navigator.language || '').slice(0, 2) === 'en' ? 'en' : 'ru';
+         const lang = (navigator.language || '').slice(0, 2).toLowerCase() === 'ru' ? 'ru' : 'en';
          loadLanguage(lang);
          setupSectionHighlighting();
          requestAnimationFrame(highlightActiveSection);

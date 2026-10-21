@@ -87,11 +87,12 @@
       "desc": "Перейдите на страницу автора через Boosty"
     },
     "ton": {
-      "title": "Ton"
+      "title": "TON"
     },
     "usdt": {
       "title": "USDT (TRC-20)"
     },
+    "intlNote": "Если вы за пределами России, начните с TON, USDT (TRC-20) или Boosty. Сбер, Альфа-Банк, ЮMoney и Cloudtips — только для карт РФ.",
     "qr": {
       "sber": "Сбербанк",
       "alfa": "Альфа-Банк",
