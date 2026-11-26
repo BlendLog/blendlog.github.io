@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 
 <head>
    <meta charset="UTF-8">
-   <script>try{document.documentElement.lang=(navigator.language||'').slice(0,2).toLowerCase()==='ru'?'ru':'en'}catch(e){document.documentElement.lang='en'}</script>
+   <script>(function(){var saved=null;try{saved=localStorage.getItem('site_lang')}catch(e){}document.documentElement.lang=saved==='ru'||saved==='en'?saved:((navigator.language||'').slice(0,2).toLowerCase()==='ru'?'ru':'en')})()</script>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title data-i18n="title">МinerSearch - Miner Detection and Removal</title>
    <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -1105,6 +1105,28 @@
    <script>
       let currentLang = 'ru';
 
+      const STORAGE_KEY = 'site_lang';
+
+      function storageGet(key) {
+         try {
+            return localStorage.getItem(key);
+         } catch (e) {
+            return null;
+         }
+      }
+
+      function storageSet(key, value) {
+         try {
+            localStorage.setItem(key, value);
+         } catch (e) { }
+      }
+
+      function detectLang() {
+         const saved = storageGet(STORAGE_KEY);
+         if (saved === 'ru' || saved === 'en') return saved;
+         return (navigator.language || '').slice(0, 2).toLowerCase() === 'ru' ? 'ru' : 'en';
+      }
+
       async function loadLanguage(lang) {
          try {
             const res = await fetch(`locales/${lang}.json`);
@@ -1161,6 +1183,9 @@
       }
 
       function switchLang(lang) {
+         if (lang !== 'ru' && lang !== 'en') return;
+         storageSet(STORAGE_KEY, lang);
+         document.documentElement.lang = lang;
          if (lang !== currentLang) loadLanguage(lang);
       }
 
@@ -1206,7 +1231,7 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
-         const lang = (navigator.language || '').slice(0, 2).toLowerCase() === 'ru' ? 'ru' : 'en';
+         const lang = detectLang();
          loadLanguage(lang);
          setupSectionHighlighting();
          requestAnimationFrame(highlightActiveSection);
@@ -1248,7 +1273,7 @@
          if (!el) return;
 
          // Попробуем из кэша
-         const cached = localStorage.getItem('gh_stars_cache');
+         const cached = storageGet('gh_stars_cache');
          if (cached) {
             try {
                const { value, timestamp } = JSON.parse(cached);
@@ -1274,7 +1299,7 @@
             if (!isNaN(stars)) {
                const formatted = formatStars(stars);
                el.innerHTML = `<i class="fas fa-star"></i> <span class="star-count">${formatted}</span>`;
-               localStorage.setItem('gh_stars_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
+               storageSet('gh_stars_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
             }
          } catch (e) {
          }
@@ -1293,7 +1318,7 @@
          if (!btn) return;
 
          // Попробуем из кэша
-         const cached = localStorage.getItem('gh_release_cache');
+         const cached = storageGet('gh_release_cache');
          if (cached) {
             try {
                const { value, version, timestamp } = JSON.parse(cached);
@@ -1309,11 +1334,12 @@
             const res = await fetch(FALLBACK_BASE + '/version.txt');
             if (res.ok) {
                const version = (await res.text()).trim();
+               if (!/^v?\d+(\.\d+){1,3}$/.test(version)) throw new Error('Unexpected version format');
                if (badge && version) {
                   badge.textContent = version;
                   // Конструируем прямую ссылку на файл по шаблону
                   btn.href = `https://github.com/BlendLog/MinerSearch/releases/download/${version}/MinerSearch_${version}.zip`;
-                  localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
+                  storageSet('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
                }
             } else {
                throw new Error('HTTP ' + res.status);
@@ -1341,7 +1367,7 @@
 
                   btn.href = directUrl || data.html_url || 'https://github.com/BlendLog/MinerSearch/releases';
                   if (badge && version) badge.textContent = version;
-                  localStorage.setItem('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
+                  storageSet('gh_release_cache', JSON.stringify({ value: btn.href, version: version, timestamp: Date.now() }));
                } else {
                   throw new Error('HTTP ' + res2.status);
                }
@@ -1357,7 +1383,7 @@
          if (!el) return;
 
          // Попробуем из кэша
-         const cached = localStorage.getItem('gh_downloads_cache');
+         const cached = storageGet('gh_downloads_cache');
          let valueFromCache = null;
          if (cached) {
             try {
@@ -1385,7 +1411,7 @@
             if (!isNaN(totalDownloads)) {
                const formatted = formatDownloads(totalDownloads);
                el.querySelector('.dl-num').textContent = formatted;
-               localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
+               storageSet('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
                return;
             }
          } catch (e) {
@@ -1407,7 +1433,7 @@
 
                const formatted = formatDownloads(totalDownloads);
                el.querySelector('.dl-num').textContent = formatted;
-               localStorage.setItem('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
+               storageSet('gh_downloads_cache', JSON.stringify({ value: formatted, timestamp: Date.now() }));
             } catch (e2) {
             }
          }
