@@ -3,7 +3,7 @@
 
 <head>
    <meta charset="UTF-8">
-   <script>try{document.documentElement.lang=(navigator.language||'').slice(0,2).toLowerCase()==='ru'?'ru':'en'}catch(e){document.documentElement.lang='en'}</script>
+   <script>(function(){var saved=null;try{saved=localStorage.getItem('site_lang')}catch(e){}document.documentElement.lang=saved==='ru'||saved==='en'?saved:((navigator.language||'').slice(0,2).toLowerCase()==='ru'?'ru':'en')})()</script>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title data-i18n="titleSupport">MinerSearch | Support the Project</title>
    <meta name="description" id="page-description" content="Реквизиты для поддержки проекта MinerSearch.">
@@ -661,12 +661,30 @@
       let currentLang = 'ru';
       let currentDict = {};
 
+      const STORAGE_KEY = 'site_lang';
+
+      function storageGet(key) {
+         try {
+            return localStorage.getItem(key);
+         } catch (e) {
+            return null;
+         }
+      }
+
+      function storageSet(key, value) {
+         try {
+            localStorage.setItem(key, value);
+         } catch (e) { }
+      }
+
       const donateOrder = {
          ru: ['sber', 'alfa', 'yoomoney', 'cloudtips', 'boosty', 'ton', 'usdt'],
          en: ['ton', 'usdt', 'boosty', 'sber', 'alfa', 'yoomoney', 'cloudtips'],
       };
 
       function detectLang() {
+         const saved = storageGet(STORAGE_KEY);
+         if (saved === 'ru' || saved === 'en') return saved;
          return (navigator.language || '').slice(0, 2).toLowerCase() === 'ru' ? 'ru' : 'en';
       }
 
@@ -738,6 +756,8 @@
       }
 
       function switchLang(lang) {
+         if (lang !== 'ru' && lang !== 'en') return;
+         storageSet(STORAGE_KEY, lang);
          applyDonateOrder(lang);
          if (lang !== currentLang) loadLanguage(lang);
       }
